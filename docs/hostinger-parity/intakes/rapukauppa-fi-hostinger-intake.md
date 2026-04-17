@@ -31,6 +31,8 @@
 - hostinger_subscription_name: `Business Web Hosting`
 - hostinger_subscription_status: `non_renewing`
 - hostinger_system_username: `u963025419`
+- account_home_path: `/home/u963025419`
+- site_parent_path_before_public_html: `/home/u963025419/domains/rapukauppa.fi`
 - public_path: `/home/u963025419/domains/rapukauppa.fi/public_html`
 - git_deploy_available: `yes`
 - git_deploy_current_status: `no repository configured; create-state visible in hPanel`
@@ -39,21 +41,21 @@
 - ssh_available: `yes`
 - ssh_enabled: `no`
 - ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
-- php_version: `unknown`
+- php_version: `PHP 8.3`
 - php_extensions_or_config_notes:
   - `PHP Configuration page is available in hPanel`
   - `Selectable versions observed in the current UI: PHP 8.2, PHP 8.3, PHP 8.4, PHP 8.5`
-  - `The active selected PHP version was not readable from the current hPanel view in this pass`
+  - `The active selected version was read from the checked radio input on the PHP Configuration page: PHP 8.3`
 - database_name: `u963025419_bdTYW`
 - database_user: `u963025419_HwpPW`
 - database_additional_visible_candidates:
-  - `u963025419_3j7E9 / u963025419_NJvtS` was visible in the same hosting account, but the site mapping for that row was not verified in this pass
+  - `u963025419_3j7E9 / u963025419_NJvtS` was visible in the same hosting account, but the Website column showed `Assign` rather than `rapukauppa.fi`
 - phpmyadmin_entry_path: `https://phpmyadmin.hostinger.com`
 - cron_in_use_yes_no: `no existing cron jobs were visible in the current hPanel cron view`
 - file_manager_or_ftp_notes:
   - Hostinger website inventory exposed the website `root_directory` as the public web root.
   - hPanel File Manager exposes a website-specific access mode and a broader hosting-plan access mode as separate choices.
-  - A literal parent path outside `public_html` was not shown in the verified File Manager text.
+  - The Cron Jobs form exposed the account-home prefix `/home/u963025419/`, which closes the parent path interpretation together with the verified public path.
 - verification_source:
   - `rapukauppa.fi`, `is_enabled`, `order_id`, `username` and `public_path`:
     - Hostinger API `GET /api/hosting/v1/websites`
@@ -69,31 +71,22 @@
     - Hostinger public OpenAPI `0.11.7` showed `Hosting: Files` and `Hosting: Wordpress` tags, but no verified read operations for site-level Git deploy, staging, SSH, PHP, database or cron capability reads
   - `Git deploy`, `staging`, `SSH`, `PHP page availability`, `database rows`, `phpMyAdmin view`, `cron view` and `File Manager wording`:
     - live Brave + Playwright attach to the already authenticated Hostinger hPanel session for `rapukauppa.fi`
+  - `active PHP version`:
+    - live Brave + Playwright DOM read from the checked radio input on the PHP Configuration page
+  - `account_home_path`:
+    - live Brave + Playwright read from the default Cron Jobs PHP command prefix `/usr/bin/php /home/u963025419/`
+  - `site_parent_path_before_public_html`:
+    - deterministic derivation from the verified `public_path` plus the verified account-home prefix
+  - `additional database row is not mapped to rapukauppa.fi`:
+    - live Brave + Playwright row read from MySQL Database Management where the Website column showed `Assign`
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
 ## Unknown / Not Yet Verified
 
-- explicit parent path literal without `public_html`
-  - why unknown:
-    - Hostinger API exposed the website web root only, and the verified File Manager text did not show the parent path as a literal path string
-  - verify in:
-    - `hPanel` or SSH/path view
-- active PHP version and final PHP config/extensions
-  - why unknown:
-    - the PHP Configuration page was reachable, but the currently active selected version was not readable from the captured view
-  - verify in:
-    - `hPanel`
-- whether the additional database row belongs to `rapukauppa.fi`
-  - why unknown:
-    - one row was clearly mapped to `rapukauppa.fi`, but the second visible row was shown as an assignable database rather than a confirmed site binding
-  - verify in:
-    - `hPanel`
-- whether `no visible cron jobs` should be treated as a final site-level no
-  - why unknown:
-    - the verified hPanel cron view showed the create form and no existing rows, but this pass did not perform any deeper operational audit beyond the visible view
-  - verify in:
-    - `hPanel`
+- no blocker-level capability unknowns remain in the current deploy-contract baseline
+- not audited in this pass:
+  - field-by-field PHP extension and option overrides beyond the active version `PHP 8.3`
 
 ## Local-to-Hostinger Parity Notes
 
@@ -139,4 +132,4 @@ Perustelu:
 
 ## Recommended Next Step
 
-- lue viela `rapukauppa.fi`-kohteen aktiivinen PHP-versio ja varmista, onko `u963025419_bdTYW / u963025419_HwpPW` sivuston ainoa kanoninen tietokantarivi; sen jalkeen lukitse ensimmainen hallittu site-kohtainen muutosmalli `staging-first manual flow` -linjaan
+- valmistele ensimmainen pieni site-kohtainen `wp-content`-muutos `staging-first manual flow` -linjalla niin, etta paketti tarkistetaan ensin staging-rajalla ennen live-promootiota
