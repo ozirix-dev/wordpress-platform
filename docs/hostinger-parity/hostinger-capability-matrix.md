@@ -3,6 +3,10 @@
 Tama matrix auttaa paattamaan, mita Hostinger-capabilitya kannattaa verrata
 localiin ja missa kohtaa site-repon metadata tarvitsee vastaavan kentan.
 
+Sarake `Site-profile field needed?` viittaa suoraan starterin
+`templates/site-repo-starter/docs/site-profile.md`-kenttiin aina kun sellainen
+kentta on tarkoituksella olemassa.
+
 | Capability | Local equivalent | Hostinger source of truth | Where to verify in hPanel | Site-profile field needed? | Notes / caveats |
 | --- | --- | --- | --- | --- | --- |
 | Root path | local WordPress-root tai mount target | Website root directory doc + site runtime | File Manager, SSH, website root context | Yes: `hostinger_root_path` | Root path on site-kohtainen, ei support-repon oletus |

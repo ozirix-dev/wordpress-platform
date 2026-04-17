@@ -117,6 +117,16 @@ Pidä kentat keskenaan johdonmukaisina:
 - `verification_source` kertoo, perustuuko tieto Hostinger-docsiin, hPaneliin,
   vai molempiin
 
+## Verification Guidance
+
+- kayta `wordpress-platform`-repon `docs/hostinger-parity/`-osiota siihen, mita
+  kannattaa tarkistaa
+- tayta capability- ja polkukentat toteutuneina vasta, kun oikea Hostinger-site
+  on tarkistettu
+- yleisdokki auttaa tulkinnassa, mutta kaytannon source of truth on oikea
+  Hostinger-site ja sen hPanel-nakyma
+- tayta `verification_date` ja `verification_source` aina intake-vaiheessa
+
 ## Paivityssaanto
 
 Paivita tama tiedosto aina, kun:

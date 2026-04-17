@@ -35,3 +35,35 @@ Hostingerin docs elavat ajan mukana. Siksi taman osion sisaanmeno on aina:
 
 Tama osio on docs-first compatibility layer. Se ei tee live-deployta, ei muuta
 DNS:aa, ei koske oikeisiin databaseihin eika tallenna salaisuuksia.
+
+## Mista aloittaa
+
+Jos haluat:
+
+- tarkistaa mita Hostingerin docs sanoivat juuri taman passin hetkella
+  - lue `hostinger-current-facts.md`
+- ymmartaa miten local, site-repo ja Hostinger vastaavat toisiaan
+  - lue `local-to-hostinger-parity-map.md`
+- mapata capabilityt suoraan starterin site-profile-kenttiin
+  - lue `hostinger-capability-matrix.md`
+- tayttaa yhden oikean Hostinger-site-intaken
+  - lue `hostinger-site-intake-template.md`
+- varmistaa, etta intake on valmis ennen site-kohtaista deploy-paatosta
+  - lue `hostinger-preflight-checklist.md`
+- tarkistaa Git deploy-, SSH/path-, PHP-, database-, staging- tai cron-rajat
+  - lue vastaava osa-aluekohtainen doki tassa kansiossa
+
+## Recommended Reading Order
+
+1. `hostinger-current-facts.md`
+2. `local-to-hostinger-parity-map.md`
+3. `hostinger-capability-matrix.md`
+4. `hostinger-site-intake-template.md`
+5. `hostinger-preflight-checklist.md`
+6. tarvittava osa-aluekohtainen doki:
+   - `hostinger-git-deploy-model.md`
+   - `hostinger-ssh-sftp-and-paths.md`
+   - `hostinger-php-runtime-parity.md`
+   - `hostinger-database-access.md`
+   - `hostinger-staging-model.md`
+   - `hostinger-cron-and-background-jobs.md`
