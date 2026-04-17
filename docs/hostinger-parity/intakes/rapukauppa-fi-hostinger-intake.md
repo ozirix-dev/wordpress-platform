@@ -8,10 +8,12 @@
 - data sources:
   - `wordpress-platform` Hostinger parity docs
   - Hostinger API via `D:\Projects\Products\rapukauppa-fi\scripts\hostinger-api.ps1`
+  - Hostinger public OpenAPI `https://developers.hostinger.com/openapi/openapi.json`
   - live WordPress REST surface `https://rapukauppa.fi/wp-json/`
   - local repo context `D:\Projects\Products\rapukauppa-fi`
   - GitHub metadata via `gh repo view ozirix-dev/rapukauppa-fi`
-  - attempted Brave/Playwright hPanel read, which stayed on Hostinger auth/challenge flow and did not produce a trustworthy in-panel read
+  - initial Brave + Playwright auth-check against copied Brave profile data
+  - live Brave + Playwright attach to the already authenticated Hostinger hPanel session after relaunching Brave with remote debugging enabled
 
 ## Site Mapping
 
@@ -26,69 +28,70 @@
 ## Verified Hostinger Facts
 
 - hosting_plan_family: `hostinger_business`
+- hostinger_subscription_name: `Business Web Hosting`
+- hostinger_subscription_status: `non_renewing`
 - hostinger_system_username: `u963025419`
 - public_path: `/home/u963025419/domains/rapukauppa.fi/public_html`
-- git_deploy_available: `unknown`
-- git_deploy_current_status: `unknown`
-- staging_available: `unknown`
-- staging_current_status: `unknown`
-- ssh_available: `unknown`
-- ssh_enabled: `unknown`
+- git_deploy_available: `yes`
+- git_deploy_current_status: `no repository configured; create-state visible in hPanel`
+- staging_available: `yes`
+- staging_current_status: `no staging environment visible; create-state visible in hPanel`
+- ssh_available: `yes`
+- ssh_enabled: `no`
+- ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
 - php_version: `unknown`
 - php_extensions_or_config_notes:
-  - `unknown`
-- database_name: `unknown`
-- database_user: `unknown`
+  - `PHP Configuration page is available in hPanel`
+  - `Selectable versions observed in the current UI: PHP 8.2, PHP 8.3, PHP 8.4, PHP 8.5`
+  - `The active selected PHP version was not readable from the current hPanel view in this pass`
+- database_name: `u963025419_bdTYW`
+- database_user: `u963025419_HwpPW`
+- database_additional_visible_candidates:
+  - `u963025419_3j7E9 / u963025419_NJvtS` was visible in the same hosting account, but the site mapping for that row was not verified in this pass
 - phpmyadmin_entry_path: `https://phpmyadmin.hostinger.com`
-- cron_in_use_yes_no: `unknown`
+- cron_in_use_yes_no: `no existing cron jobs were visible in the current hPanel cron view`
 - file_manager_or_ftp_notes:
-  - Hostinger website inventory exposed the website `root_directory` only as the public web root.
-  - A separate hPanel File Manager or FTP view was not verified in this pass.
+  - Hostinger website inventory exposed the website `root_directory` as the public web root.
+  - hPanel File Manager exposes a website-specific access mode and a broader hosting-plan access mode as separate choices.
+  - A literal parent path outside `public_html` was not shown in the verified File Manager text.
 - verification_source:
   - `rapukauppa.fi`, `is_enabled`, `order_id`, `username` and `public_path`:
     - Hostinger API `GET /api/hosting/v1/websites`
   - `hosting_plan_family`:
     - Hostinger API `GET /api/hosting/v1/orders?statuses[]=active&order_ids[]=1006284049`
+  - `hostinger_subscription_name` and `hostinger_subscription_status`:
+    - Hostinger API `GET /api/billing/v1/subscriptions`
   - `wordpress_detected_yes_no`:
     - live `https://rapukauppa.fi/wp-json/` response exposed a WordPress REST index and Hostinger WordPress plugin namespaces
   - `mapped_github_repo` and visibility:
     - `gh repo view ozirix-dev/rapukauppa-fi`
+  - `shared-hosting capability API gap`:
+    - Hostinger public OpenAPI `0.11.7` showed `Hosting: Files` and `Hosting: Wordpress` tags, but no verified read operations for site-level Git deploy, staging, SSH, PHP, database or cron capability reads
+  - `Git deploy`, `staging`, `SSH`, `PHP page availability`, `database rows`, `phpMyAdmin view`, `cron view` and `File Manager wording`:
+    - live Brave + Playwright attach to the already authenticated Hostinger hPanel session for `rapukauppa.fi`
+  - `initial copied-profile auth-check`:
+    - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
 ## Unknown / Not Yet Verified
 
-- separate account home path without `public_html`
+- explicit parent path literal without `public_html`
   - why unknown:
-    - Hostinger API exposed the website web root only
+    - Hostinger API exposed the website web root only, and the verified File Manager text did not show the parent path as a literal path string
   - verify in:
     - `hPanel` or SSH/path view
-- Git deploy availability and current configuration
+- active PHP version and final PHP config/extensions
   - why unknown:
-    - not exposed by the API calls used in this pass and hPanel read did not complete
+    - the PHP Configuration page was reachable, but the currently active selected version was not readable from the captured view
   - verify in:
     - `hPanel`
-- Hostinger staging availability and current status
+- whether the additional database row belongs to `rapukauppa.fi`
   - why unknown:
-    - hPanel WordPress/staging view was not verified
+    - one row was clearly mapped to `rapukauppa.fi`, but the second visible row was shown as an assignable database rather than a confirmed site binding
   - verify in:
     - `hPanel`
-- SSH availability, enabled state and actual host string
+- whether `no visible cron jobs` should be treated as a final site-level no
   - why unknown:
-    - capability is plan-sensitive and was not confirmed from this account
-  - verify in:
-    - `hPanel`
-- PHP version and PHP config/extensions
-  - why unknown:
-    - current account/site runtime view was not reached
-  - verify in:
-    - `hPanel`
-- database name and database user
-  - why unknown:
-    - not exposed by the website/order API calls used here
-  - verify in:
-    - `hPanel`
-- cron usage
-  - why unknown:
-    - cron list was not reachable in this pass
+    - the verified hPanel cron view showed the create form and no existing rows, but this pass did not perform any deeper operational audit beyond the visible view
   - verify in:
     - `hPanel`
 
@@ -98,6 +101,7 @@
   - site-owned `wp-content` code in `D:\Projects\Products\rapukauppa-fi`
   - the current local attachment to `D:\Projects\Systems\wordpress-dev`
   - the reality that production is a live WordPress site on Hostinger, not a full-repo runtime mirror
+  - the active Hostinger PHP major version once it is read from hPanel
 - local should not try to mirror:
   - Hostinger uploads
   - Hostinger database state
@@ -114,32 +118,25 @@
 
 ## Deployment Recommendation For This Site
 
-- recommended model right now: `manual package`
+- recommended model right now: `staging-first manual flow`
 
 Perustelu:
 
-- verified facts prove that `rapukauppa.fi` exists as an active Hostinger website
-  on `hostinger_business`
+- verified facts prove that `rapukauppa.fi` exists as an active Hostinger website on `hostinger_business`
 - verified facts also prove that the live site is a WordPress installation
-- this pass did not verify Git deploy, staging or SSH in hPanel, so niiden
-  varaan ei pidä lukita ensimmäistä site-kohtaista deploy-päätöstä
+- staging capability is visible in hPanel, but no staging environment exists yet
+- Git deploy capability is visible in hPanel, but no repository is configured
+- SSH capability is visible, but it is currently `INACTIVE`
+- therefore the safest first site-specific deployment path is still a manual artifact flow, but now with staging as the preferred first boundary rather than direct live-only promotion
 
 ## Risks / Caveats
 
 - Hostinger capability flags remain partly plan-sensitive and hPanel-sensitive
-- the public WordPress surface can drift independently from the local repo until
-  the first controlled site-code adoption pass is complete
+- the copied Brave profile did not preserve reusable authenticated sessions for GitHub, Cloudflare or Hostinger in Playwright, so the reliable browser path currently depends on relaunching live Brave with remote debugging enabled
+- the public WordPress surface can drift independently from the local repo until the first controlled site-code adoption pass is complete
 - do not store secrets, database passwords or SSH private keys in repo docs
-- do not treat `phpmyadmin_entry_path` as proof that the correct database is
-  already mapped; it is only the current Hostinger direct entry URL pattern
+- do not treat `phpmyadmin_entry_path` as proof that the correct database is already mapped; it is only the current Hostinger direct entry URL pattern
 
 ## Recommended Next Step
 
-- tee yksi autentikoitu `rapukauppa.fi`-kohteen hPanel-only capability read ja
-  tayta sen perusteella puuttuvat kentat:
-  - staging
-  - Git deploy
-  - SSH
-  - PHP version
-  - database name/user
-  - cron
+- lue viela `rapukauppa.fi`-kohteen aktiivinen PHP-versio ja varmista, onko `u963025419_bdTYW / u963025419_HwpPW` sivuston ainoa kanoninen tietokantarivi; sen jalkeen lukitse ensimmainen hallittu site-kohtainen muutosmalli `staging-first manual flow` -linjaan
