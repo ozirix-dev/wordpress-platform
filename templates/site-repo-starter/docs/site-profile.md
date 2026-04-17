@@ -19,7 +19,8 @@ primary_locale: fi_FI
 additional_locales: []
 
 installation_type: single
-child_theme: your-child-theme
+theme_slug: your-site-theme
+parent_theme_slug: null
 custom_plugin: your-custom-plugin
 mu_plugins:
   - site-tweaks.php
@@ -33,7 +34,7 @@ production_url: https://example.com
 deployment_method: manual-package
 
 tracked_in_repo:
-  - wp-content/themes/your-child-theme/
+  - wp-content/themes/your-site-theme/
   - wp-content/plugins/your-custom-plugin/
   - wp-content/mu-plugins/site-tweaks.php
   - docs/
@@ -67,15 +68,19 @@ notes: |
   - `single`
   - `multisite`
 
-Kentta `child_theme` on taman starterin yhteensopivuuskentta site-repon
-repo-managed teeman slugille. Kirjaa siihen kaytettava theme slug, vaikka
-ensimmainen versio olisi standalone-teema eika varsinainen child theme.
+Kentta `theme_slug` kertoo site-repon oman repo-managed teeman kansion nimen.
+Kentta `parent_theme_slug` on valinnainen ja taytetaan vain silloin, kun
+sivusto tarkoituksella nojaa erilliseen parent-themeen.
 
 Pidä kentat keskenaan johdonmukaisina:
 
 - `language_model: single` sopii normaalisti yhteen `installation_type: single`
 - `language_model: multilingual` on yleensa edelleen `installation_type: single`
 - `language_model: multisite-network` tai `multisite-subsite` edellyttaa kaytannossa `installation_type: multisite`
+- `parent_theme_slug: null` on normaali oletus, kun starterin teema on oma
+  standalone site theme
+- jos `parent_theme_slug` on asetettu, theme-koodin ja `style.css`-headerin
+  kuuluu vastata sita tietoisesti
 
 ## Paivityssaanto
 

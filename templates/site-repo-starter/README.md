@@ -12,9 +12,13 @@ Site-repo omistaa yhden sivuston versionhallittavan kerroksen:
 - site-kohtaiset docsit
 - kevyet paikalliset helper-skriptit
 
-Starterin oletusteema on child-theme scaffold, mutta site-repon repo-managed
-teema voi olla myos standalone-teema, jos local baseline tai oikea sivusto ei
-perustu erilliseen parent-themeen.
+Starterin oletusteema on neutral site theme -scaffold. Oletus on siis oma
+repo-managed standalone-teema, joka ei nojaa erilliseen parent-themeen ilman
+site-kohtaista paatosta.
+
+Jos oikea sivusto tarvitsee child-teeman, muuta placeholder-teema
+tarkoituksellisesti child-theme-malliin ja kirjaa `parent_theme_slug`
+`site-profile.md`:aan.
 
 Nykyinen local smoke -tulos todisti standalone-teemalla sync-, packaging- ja
 runtime-rajan. Se ei viela yksinaan todista child theme + parent theme -polkua,
@@ -81,7 +85,7 @@ WordPress Multisite on poikkeusmalli. Jos sivusto kuuluu multisite-verkkoon, dok
 1. Kopioi taman starterin sisalto uuteen site-repoon.
 2. Nimea placeholderit site-kohtaisiksi:
    - `your-site-slug`
-   - `your-child-theme` tai vastaava site-kohtainen theme slug
+   - `your-site-theme` tai vastaava site-kohtainen theme slug
    - `your-custom-plugin`
 3. Tayta `docs/site-profile.md` ensimmaisena.
 4. Tayta `docs/deployment.md`, `docs/languages-and-locales.md` ja `docs/content-boundaries.md`.

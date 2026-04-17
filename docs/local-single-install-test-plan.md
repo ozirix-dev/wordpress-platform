@@ -127,6 +127,11 @@ Kaytannon huomio ensimmaisen smoke-kierroksen jalkeen:
 - child theme -malli kannattaa ottaa käyttöön vasta, kun parent-theme on osa
   tiedossa olevaa local baselinea tai oikeaa site-repoa
 
+Starterin nykyinen oletusmalli seuraa samaa linjaa: ensimmaisen site-repon
+placeholder-teema on neutral site theme -scaffold, ei pakotettu child theme.
+Jos sivusto tarvitsee child-teeman, kirjaa `parent_theme_slug`
+`site-profile.md`:aan ja muuta teeman headerit site-kohtaisesti.
+
 Mita nykyinen smoke-testi todisti:
 
 - local sync -raja toimii yhdella local WordPress-asennuksella
@@ -140,9 +145,9 @@ Mita nykyinen smoke-testi ei viela todistanut:
 - smoke tehtiin tarkoituksella standalone-teemalla, jotta parent-theme-riippuvuus
   ei sotke ensimmaista boundary-validointia
 
-Tama ei tee child theme -mallista huonoa oletusta. Se vain tarkoittaa, etta
+Tama ei tee child theme -mallista huonoa ratkaisua. Se vain tarkoittaa, etta
 parent-themeen sidottu polku kannattaa testata seuraavassa erillisessa
-follow-up-passissa.
+follow-up-passissa, eika sitoa starterin oletusscaffoldia siihen.
 
 ## Vaihe 4: Tarkista omistusraja ennen syncia
 

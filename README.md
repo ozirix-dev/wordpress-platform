@@ -101,6 +101,11 @@ Tama `wordpress-platform`-repo ei omista Docker-runtimea, local stackia tai jaet
 
 Starter ei yrita olla valmis tuote. Sen tarkoitus on pakottaa oikeat boundaryt heti alkuun.
 
+Starterin theme-oletus on neutral site theme -malli. Se tarkoittaa, etta
+starterin placeholder-teema on oletuksena oma standalone-teema, ja
+child-theme-polku otetaan kayttoon vasta site-kohtaisesti silloin, kun repo
+aidosti nojaa erilliseen parent-themeen.
+
 ## Miten uusi site-repo bootstrapataan
 
 1. Luo uusi repo polkuun `D:\Projects\Products\<site-slug>`.

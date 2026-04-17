@@ -12,7 +12,7 @@ Tama checklista on tarkoitettu uuden WordPress site-repon perustamiseen.
 
 - kopioi `templates/site-repo-starter/` uuden site-repon rungoksi
 - vaihda placeholder-nimet:
-  - `your-child-theme` tai vastaava site-kohtainen theme slug
+  - `your-site-theme` tai vastaava site-kohtainen theme slug
   - `your-custom-plugin`
   - `your-site-slug`
 
@@ -50,6 +50,8 @@ Monikielisyys ei tarkoita automaattisesti multisitea.
 - tarkista `docs/deployment.md`
 - tarkista `.gitignore`
 - tarkista starterin `wp-content`-runko
+- paata kaytetaanko omaa standalone-teemaa vai tarkoituksellista child-teemaa
+  parent-themea vasten
 
 ## 8. Mita ei kannata tehda liian aikaisin
 

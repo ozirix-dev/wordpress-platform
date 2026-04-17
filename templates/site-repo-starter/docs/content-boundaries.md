@@ -12,9 +12,12 @@ Tahan repoon kuuluu vain yhden sivuston versionhallittava kerros:
 - `docs/`
 - `tools/`
 
-Teema voi olla joko child theme tai standalone-teema. Oleellista on, etta
-kyse on sivuston omasta repo-managed teemasta, ei WordPress-coren tai hostin
-jaetusta runtime-sisallosta.
+Starterin oletus on sivuston oma standalone-teema. Tarvittaessa teema voi olla
+myos child theme, mutta silloin parent-theme-riippuvuus kuuluu dokumentoida
+site-profileen ja theme-headeriin tietoisesti.
+
+Oleellista on, etta kyse on sivuston omasta repo-managed teemasta, ei
+WordPress-coren tai hostin jaetusta runtime-sisallosta.
 
 ## Mita ei kuulu tahan repoon
 
