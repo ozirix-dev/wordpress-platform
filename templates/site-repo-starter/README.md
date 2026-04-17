@@ -24,6 +24,40 @@ Nykyinen local smoke -tulos todisti standalone-teemalla sync-, packaging- ja
 runtime-rajan. Se ei viela yksinaan todista child theme + parent theme -polkua,
 jos site-repo nojaa valmiiseen parent-themeen.
 
+## Child-theme conversion
+
+Standalone site theme riittaa, kun sivusto omistaa oman teema-runkonsa eika
+nojaa tarkoituksellisesti erilliseen parent-themeen.
+
+Siirry child theme -malliin vasta silloin, kun sivusto oikeasti laajentaa
+yhteisesti hallittua parent-themea.
+
+Pieni conversion-checklist:
+
+1. paivita `docs/site-profile.md`:
+   - `theme_slug: your-child-theme`
+   - `parent_theme_slug: your-parent-theme`
+2. lisaa `style.css`:aan `Template:`-header, joka vastaa parent-theme-slugia
+3. vaihda `functions.php`:n nykyinen standalone-oletus child-theme-logiikkaan,
+   jos parent-theme tarvitsee oman stylesheetin enqueue-ajon
+
+Esimerkkikatkelma child-theme-headerista:
+
+```css
+/*
+Theme Name: Example Child Theme
+Template: kadence
+Text Domain: example-child-theme
+*/
+```
+
+Validation-muistutus:
+
+- jos `parent_theme_slug` on asetettu, `style.css`-headerin, runtime-baselinen
+  ja oikean parent-theme-paketin kuuluu vastata toisiaan
+- nykyinen local smoke -baseline todisti standalone-teeman, ei yksinaan
+  parent-themeen sidottua child-theme-polkuasi
+
 Site-repo ei omista yhteista WordPress-perheen support- tai umbrella-kerrosta.
 
 ## Mita tama repo ei sisalla
