@@ -138,4 +138,10 @@ Seuraava isompi vaihe local smoke -vaiheen jalkeen on Hostinger parity -kerros:
 - [docs/hostinger-parity/local-to-hostinger-parity-map.md](./docs/hostinger-parity/local-to-hostinger-parity-map.md)
 - [docs/hostinger-parity/hostinger-preflight-checklist.md](./docs/hostinger-parity/hostinger-preflight-checklist.md)
 
+Plugin- ja runtime-boundary kannattaa lukea omana kerroksenaan:
+
+- [docs/plugin-governance.md](./docs/plugin-governance.md)
+- [docs/plugin-taxonomy-and-placement.md](./docs/plugin-taxonomy-and-placement.md)
+- [docs/plugin-sync-boundaries.md](./docs/plugin-sync-boundaries.md)
+
 Tavoite on yksinkertainen: jokainen sivusto pysyy omana omistajareponaan, ja shared support -kerros pysyy kevyena mutta hyodyllisena.
