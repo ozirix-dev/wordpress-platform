@@ -120,6 +120,13 @@ Ensimmainen testikohde kannattaa pitaa mahdollisimman yksinkertaisena:
 
 Tavoite on ensin todentaa perusraja, ei kaikkea kerralla.
 
+Kaytannon huomio ensimmaisen smoke-kierroksen jalkeen:
+
+- jos local harnessissa ei ole valmiiksi tarkoitettua parent-themea, ensimmainen
+  smoke-teema kannattaa tehda tarkoituksella standalone-teemaksi
+- child theme -malli kannattaa ottaa takaisin vasta, kun parent-theme on osa
+  tiedossa olevaa local baselinea tai oikeaa site-repoa
+
 ## Vaihe 4: Tarkista omistusraja ennen syncia
 
 Ennen kuin yhtaan tiedostoa kopioidaan local WordPressiin, tarkista:

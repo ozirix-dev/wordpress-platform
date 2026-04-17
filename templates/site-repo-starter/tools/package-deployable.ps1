@@ -62,6 +62,10 @@ function Resolve-OrCreateDirectory {
     param([Parameter(Mandatory = $true)] [string] $Path)
 
     if (-not (Test-Path -LiteralPath $Path)) {
+        if ($WhatIfPreference) {
+            return [System.IO.Path]::GetFullPath($Path)
+        }
+
         if ($PSCmdlet.ShouldProcess($Path, "Create output directory")) {
             New-Item -ItemType Directory -Path $Path -Force | Out-Null
         }
@@ -84,13 +88,31 @@ function Test-SafeRelativeRepoPath {
     return $true
 }
 
+function Copy-ScopeItems {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $SourceScope,
+
+        [Parameter(Mandatory = $true)]
+        [string] $DestinationScope
+    )
+
+    foreach ($item in Get-ChildItem -LiteralPath $SourceScope -Force) {
+        if ($item.PSIsContainer) {
+            Copy-Item -LiteralPath $item.FullName -Destination $DestinationScope -Recurse -Force
+        }
+        else {
+            Copy-Item -LiteralPath $item.FullName -Destination $DestinationScope -Force
+        }
+    }
+}
+
 function New-Manifest {
     param(
         [Parameter(Mandatory = $true)]
         [string] $TargetPath,
 
-        [Parameter(Mandatory = $true)]
-        [string[]] $IncludedScopes,
+        [string[]] $IncludedScopes = @(),
 
         [Parameter(Mandatory = $true)]
         [hashtable] $Warnings,
@@ -104,16 +126,15 @@ function New-Manifest {
         [Parameter(Mandatory = $true)]
         [string] $SourcePath,
 
-        [Parameter(Mandatory = $true)]
-        [string[]] $IncludedExtraFiles
+        [string[]] $IncludedExtraFiles = @()
     )
 
     $manifestPath = Join-Path $TargetPath 'package-manifest.json'
     $payload = [ordered]@{
         generatedAt = $GeneratedAt.ToString('o')
         artifactType = $ArtifactKind
-        scopeNames = $IncludedScopes
-        includedExtras = $IncludedExtraFiles
+        scopeNames = @($IncludedScopes)
+        includedExtras = @($IncludedExtraFiles)
         sourceRepo = $SourcePath
         warnings = @($Warnings.GetEnumerator() | ForEach-Object {
                 @{
@@ -169,7 +190,7 @@ foreach ($scope in $Scopes) {
             New-Item -ItemType Directory -Path $destinationScope -Force | Out-Null
         }
 
-        Copy-Item -LiteralPath (Join-Path $sourceScope '*') -Destination $destinationScope -Recurse -Force
+        Copy-ScopeItems -SourceScope $sourceScope -DestinationScope $destinationScope
     }
 }
 
