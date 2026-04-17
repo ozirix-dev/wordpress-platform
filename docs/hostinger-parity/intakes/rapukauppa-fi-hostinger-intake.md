@@ -50,11 +50,20 @@
 - staging_dns_proxy_status: `DNS only`
 - staging_ssl_current_status: `Lifetime SSL Active`
 - staging_ssl_action_this_pass: `none; no install/reinstall was needed`
+- staging_active_file_root: `/home/u963025419/domains/rapukauppa.fi/public_html/staging`
 - staging_public_reachability: `passed; authoritative DNS resolves and HTTPS baseline now responds on front, wp-admin and wp-json`
 - staging_baseline_front_https: `passed; browser and curl returned 200 OK`
 - staging_baseline_wp_admin_https: `passed; browser returned 200 OK to the authenticated dashboard and curl returned a normal WordPress login redirect boundary`
 - staging_baseline_wp_json_https: `passed; browser and curl returned 200 OK`
 - staging_baseline_wp_json_http: `passed; WordPress REST index still returned over HTTP`
+- staging_first_verified_site_code_pass: `passed`
+- staging_first_verified_site_code_repo_file: `wp-content/mu-plugins/rapukauppa-site-runtime.php`
+- staging_first_verified_site_code_apply_scope: `single-file upload only`
+- staging_first_verified_site_code_remote_target: `/home/u963025419/domains/rapukauppa.fi/public_html/staging/wp-content/mu-plugins/rapukauppa-site-runtime.php`
+- staging_first_verified_site_code_front_result: `passed; the footer note "Sivustoa kehitetään jatkuvasti paremman ostokokemuksen tueksi." is visible on the public staging front`
+- staging_first_verified_site_code_runtime_result: `passed; /wp-json/rapukauppa/v1/runtime now returns site rapukauppa.fi, environment staging, theme twentytwentyfive, and version 0.1.1`
+- staging_first_verified_site_code_header_result: `passed; staging responses now emit X-Rapukauppa-Site and X-Rapukauppa-Environment`
+- staging_first_verified_site_code_production_non_impact: `passed; production front does not show the footer note and production /wp-json/rapukauppa/v1/runtime still returns 404`
 - ssh_available: `yes`
 - ssh_enabled: `no`
 - ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
@@ -122,6 +131,15 @@
     - browser check to `https://staging.rapukauppa.fi/wp-admin/` returned the authenticated WordPress dashboard
     - browser check to `https://staging.rapukauppa.fi/wp-json/` returned a WordPress REST index
     - browser check to `http://staging.rapukauppa.fi/wp-json/` returned a WordPress REST index
+  - `staging_active_file_root`:
+    - Hostinger File Browser in hosting-plan mode exposed the active staging tree at `domains/rapukauppa.fi/public_html/staging`
+    - the guessed `domains/staging.rapukauppa.fi/public_html` path did not exist in the same file tree
+  - `staging_first_verified_site_code_pass`:
+    - Hostinger File Browser showed `wp-content/mu-plugins` inside the verified staging root and accepted a single-file upload of `rapukauppa-site-runtime.php`
+    - subsequent `curl` checks against `https://staging.rapukauppa.fi/` showed `X-Rapukauppa-Site: rapukauppa.fi` and `X-Rapukauppa-Environment: staging`
+    - `curl https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime?cb=sitepass1` returned environment `staging`, theme `twentytwentyfive`, and version `0.1.1`
+    - public staging front output now includes the footer note `Sivustoa kehitetään jatkuvasti paremman ostokokemuksen tueksi.`
+    - production checks confirmed that the same footer note is absent on `https://rapukauppa.fi/` and that `https://rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returns `404`
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -172,7 +190,7 @@ Perustelu:
 - the final chosen proxy status remains `DNS only`; this pass kept Cloudflare read-only and confirmed that the staging record still resolves correctly through that mode
 - Hostinger now shows the staging hostname in SSL state `Lifetime SSL / Active`
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
-- therefore the safest first site-specific deployment path remains a manual artifact flow with staging as the preferred first review boundary, and the next concrete step can move from TLS unblocking to the first small staged site-code change
+- therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
 
 ## Risks / Caveats
 
@@ -186,4 +204,4 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee ensimmainen pieni site-code muutos staging-first manual flow -mallilla, pakkaa se hallitusti ja arvioi muutos ensin `https://staging.rapukauppa.fi/`-ymparistossa ennen productioniin liittyvia paatoksia
+- tee seuraava pieni repo-owned front-end parannus, mieluiten theme- tai template-tasolla, nyt kun stagingin aktiivinen file-root ja mu-plugin apply-polku on varmennettu onnistuneesti ennen productioniin liittyvia paatoksia
