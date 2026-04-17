@@ -120,6 +120,7 @@ Lue ainakin:
 - [docs/site-types.md](./docs/site-types.md)
 - [docs/multilingual-strategy.md](./docs/multilingual-strategy.md)
 - [docs/multisite-decision-guide.md](./docs/multisite-decision-guide.md)
+- [docs/local-single-install-test-plan.md](./docs/local-single-install-test-plan.md)
 - [docs/repo-bootstrap-checklist.md](./docs/repo-bootstrap-checklist.md)
 
 Tavoite on yksinkertainen: jokainen sivusto pysyy omana omistajareponaan, ja shared support -kerros pysyy kevyena mutta hyodyllisena.
