@@ -14,6 +14,9 @@
   - GitHub metadata via `gh repo view ozirix-dev/rapukauppa-fi`
   - initial Brave + Playwright auth-check against copied Brave profile data
   - live Brave + Playwright attach to the already authenticated Hostinger hPanel session after relaunching Brave with remote debugging enabled
+  - live Brave + Playwright read of the Hostinger WordPress Staging page before and after staging creation
+  - live Brave + Playwright read of the authenticated Cloudflare DNS Records page for `rapukauppa.fi`
+  - public DNS and HTTP reachability checks against `https://staging.rapukauppa.fi/`
 
 ## Site Mapping
 
@@ -37,7 +40,9 @@
 - git_deploy_available: `yes`
 - git_deploy_current_status: `no repository configured; create-state visible in hPanel`
 - staging_available: `yes`
-- staging_current_status: `no staging environment visible; create-state visible in hPanel`
+- staging_current_status: `created; visible in hPanel staging list with status Completed`
+- staging_exact_url: `https://staging.rapukauppa.fi/`
+- staging_public_reachability: `blocked at verification time; DNS name did not resolve publicly`
 - ssh_available: `yes`
 - ssh_enabled: `no`
 - ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
@@ -71,6 +76,8 @@
     - Hostinger public OpenAPI `0.11.7` showed `Hosting: Files` and `Hosting: Wordpress` tags, but no verified read operations for site-level Git deploy, staging, SSH, PHP, database or cron capability reads
   - `Git deploy`, `staging`, `SSH`, `PHP page availability`, `database rows`, `phpMyAdmin view`, `cron view` and `File Manager wording`:
     - live Brave + Playwright attach to the already authenticated Hostinger hPanel session for `rapukauppa.fi`
+  - `staging_current_status`, `staging_exact_url` and create outcome:
+    - live Brave + Playwright read of the Hostinger WordPress Staging page after creating subdomain `staging`
   - `active PHP version`:
     - live Brave + Playwright DOM read from the checked radio input on the PHP Configuration page
   - `account_home_path`:
@@ -79,12 +86,22 @@
     - deterministic derivation from the verified `public_path` plus the verified account-home prefix
   - `additional database row is not mapped to rapukauppa.fi`:
     - live Brave + Playwright row read from MySQL Database Management where the Website column showed `Assign`
+  - `staging_public_reachability`:
+    - `Resolve-DnsName staging.rapukauppa.fi`
+    - `Invoke-WebRequest https://staging.rapukauppa.fi/`
+    - `Invoke-WebRequest https://staging.rapukauppa.fi/wp-admin/`
+    - `Invoke-WebRequest https://staging.rapukauppa.fi/wp-json/`
+    - live Brave + Playwright read of the authenticated Cloudflare DNS Records page, which showed only apex `A` and `www` `CNAME` records for `rapukauppa.fi`
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
 ## Unknown / Not Yet Verified
 
 - no blocker-level capability unknowns remain in the current deploy-contract baseline
+- public staging baseline checks are currently blocked, not unknown:
+  - Hostinger shows staging as created and completed
+  - public DNS for `staging.rapukauppa.fi` did not resolve at verification time
+  - because the staging hostname does not resolve publicly yet, front page, `wp-admin` and `wp-json` checks could not be completed in this pass
 - not audited in this pass:
   - field-by-field PHP extension and option overrides beyond the active version `PHP 8.3`
 
@@ -117,19 +134,21 @@ Perustelu:
 
 - verified facts prove that `rapukauppa.fi` exists as an active Hostinger website on `hostinger_business`
 - verified facts also prove that the live site is a WordPress installation
-- staging capability is visible in hPanel, but no staging environment exists yet
+- staging capability is visible in hPanel and the first staging environment now exists at `https://staging.rapukauppa.fi/`
 - Git deploy capability is visible in hPanel, but no repository is configured
 - SSH capability is visible, but it is currently `INACTIVE`
-- therefore the safest first site-specific deployment path is still a manual artifact flow, but now with staging as the preferred first boundary rather than direct live-only promotion
+- public staging baseline verification is still blocked because `staging.rapukauppa.fi` does not currently resolve in public DNS
+- therefore the safest first site-specific deployment path is still a manual artifact flow with staging as the preferred first boundary, but the next concrete blocker is now DNS reachability rather than missing staging capability
 
 ## Risks / Caveats
 
 - Hostinger capability flags remain partly plan-sensitive and hPanel-sensitive
 - the copied Brave profile did not preserve reusable authenticated sessions for GitHub, Cloudflare or Hostinger in Playwright, so the reliable browser path currently depends on relaunching live Brave with remote debugging enabled
 - the public WordPress surface can drift independently from the local repo until the first controlled site-code adoption pass is complete
+- the first staging subdomain now exists in Hostinger, but public reachability is blocked until the authoritative DNS layer exposes `staging.rapukauppa.fi`
 - do not store secrets, database passwords or SSH private keys in repo docs
 - do not treat `phpmyadmin_entry_path` as proof that the correct database is already mapped; it is only the current Hostinger direct entry URL pattern
 
 ## Recommended Next Step
 
-- valmistele ensimmainen pieni site-kohtainen `wp-content`-muutos `staging-first manual flow` -linjalla niin, etta paketti tarkistetaan ensin staging-rajalla ennen live-promootiota
+- tee erillinen pieni DNS-pass, jossa lisataan tai varmennetaan `staging.rapukauppa.fi` nykyiseen Cloudflare-zoneseen, ja aja vasta sen jalkeen staging-frontin, `wp-admin`-polun ja `wp-json`-pinnan baseline-check uudelleen
