@@ -67,6 +67,10 @@ notes: |
   - `single`
   - `multisite`
 
+Kentta `child_theme` on taman starterin yhteensopivuuskentta site-repon
+repo-managed teeman slugille. Kirjaa siihen kaytettava theme slug, vaikka
+ensimmainen versio olisi standalone-teema eika varsinainen child theme.
+
 Pidä kentat keskenaan johdonmukaisina:
 
 - `language_model: single` sopii normaalisti yhteen `installation_type: single`

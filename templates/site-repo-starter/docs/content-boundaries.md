@@ -6,11 +6,15 @@ Tama tiedosto kertoo, mita tahan site-repoon kuuluu ja mita ei.
 
 Tahan repoon kuuluu vain yhden sivuston versionhallittava kerros:
 
-- child theme
+- site-kohtainen teema
 - custom pluginit
 - site-kohtaiset mu-pluginit
 - `docs/`
 - `tools/`
+
+Teema voi olla joko child theme tai standalone-teema. Oleellista on, etta
+kyse on sivuston omasta repo-managed teemasta, ei WordPress-coren tai hostin
+jaetusta runtime-sisallosta.
 
 ## Mita ei kuulu tahan repoon
 

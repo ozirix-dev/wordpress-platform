@@ -6,11 +6,19 @@ Tama template on tarkoitettu yhden WordPress-sivuston omistajarepon V1-bootstrap
 
 Site-repo omistaa yhden sivuston versionhallittavan kerroksen:
 
-- site-kohtaisen child themen
+- site-kohtaisen teeman
 - site-kohtaisen custom pluginin
 - site-kohtaiset mu-pluginit
 - site-kohtaiset docsit
 - kevyet paikalliset helper-skriptit
+
+Starterin oletusteema on child-theme scaffold, mutta site-repon repo-managed
+teema voi olla myos standalone-teema, jos local baseline tai oikea sivusto ei
+perustu erilliseen parent-themeen.
+
+Nykyinen local smoke -tulos todisti standalone-teemalla sync-, packaging- ja
+runtime-rajan. Se ei viela yksinaan todista child theme + parent theme -polkua,
+jos site-repo nojaa valmiiseen parent-themeen.
 
 Site-repo ei omista yhteista WordPress-perheen support- tai umbrella-kerrosta.
 
@@ -73,7 +81,7 @@ WordPress Multisite on poikkeusmalli. Jos sivusto kuuluu multisite-verkkoon, dok
 1. Kopioi taman starterin sisalto uuteen site-repoon.
 2. Nimea placeholderit site-kohtaisiksi:
    - `your-site-slug`
-   - `your-child-theme`
+   - `your-child-theme` tai vastaava site-kohtainen theme slug
    - `your-custom-plugin`
 3. Tayta `docs/site-profile.md` ensimmaisena.
 4. Tayta `docs/deployment.md`, `docs/languages-and-locales.md` ja `docs/content-boundaries.md`.

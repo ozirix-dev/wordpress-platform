@@ -12,7 +12,7 @@ Tama checklista on tarkoitettu uuden WordPress site-repon perustamiseen.
 
 - kopioi `templates/site-repo-starter/` uuden site-repon rungoksi
 - vaihda placeholder-nimet:
-  - `your-child-theme`
+  - `your-child-theme` tai vastaava site-kohtainen theme slug
   - `your-custom-plugin`
   - `your-site-slug`
 

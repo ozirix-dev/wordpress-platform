@@ -20,7 +20,7 @@ vaiheessa emme testaa usean sivuston rinnakkaisajoa emmeka multisite-verkkoa.
 Yksi puhdas single-site WordPress-asennus riittaa todentamaan:
 
 - starter-rungon kaynnistyminen
-- child themen ja pluginien sijoittuminen oikeisiin polkuihin
+- repo-managed teeman ja pluginien sijoittuminen oikeisiin polkuihin
 - helper-skriptien dry-run- ja sync-kayttaytyminen
 - package-helperin rajaus repo-managed sisaltoon
 - sen, etta core, uploads, tietokanta ja salaisuudet pysyvat Gitin ulkopuolella
@@ -114,7 +114,7 @@ Ensimmainen testikohde kannattaa pitaa mahdollisimman yksinkertaisena:
 - `language_model: single`
 - `translation_method: none`
 - `installation_type: single`
-- yksi child theme
+- yksi repo-managed teema
 - yksi custom plugin
 - yksi mu-plugin
 
@@ -124,8 +124,25 @@ Kaytannon huomio ensimmaisen smoke-kierroksen jalkeen:
 
 - jos local harnessissa ei ole valmiiksi tarkoitettua parent-themea, ensimmainen
   smoke-teema kannattaa tehda tarkoituksella standalone-teemaksi
-- child theme -malli kannattaa ottaa takaisin vasta, kun parent-theme on osa
+- child theme -malli kannattaa ottaa käyttöön vasta, kun parent-theme on osa
   tiedossa olevaa local baselinea tai oikeaa site-repoa
+
+Mita nykyinen smoke-testi todisti:
+
+- local sync -raja toimii yhdella local WordPress-asennuksella
+- packaging-raja toimii repo-managed `wp-content`-sisallolle
+- runtime-raja toimii, kun repo-managed teema ja plugin aktivoidaan harnessissa
+
+Mita nykyinen smoke-testi ei viela todistanut:
+
+- child theme + oikea parent theme -polkua ei ole viela todennettu erillisena
+  testina
+- smoke tehtiin tarkoituksella standalone-teemalla, jotta parent-theme-riippuvuus
+  ei sotke ensimmaista boundary-validointia
+
+Tama ei tee child theme -mallista huonoa oletusta. Se vain tarkoittaa, etta
+parent-themeen sidottu polku kannattaa testata seuraavassa erillisessa
+follow-up-passissa.
 
 ## Vaihe 4: Tarkista omistusraja ennen syncia
 
@@ -200,7 +217,7 @@ Ensimmainen smoke-testilista:
 
 - front page latautuu
 - admin `/wp-admin/` latautuu
-- child theme voidaan aktivoida
+- teema voidaan aktivoida
 - custom plugin voidaan aktivoida
 - mu-plugin ei riko kirjautumista tai adminia
 - permalinks voidaan tallentaa ilman virhetta

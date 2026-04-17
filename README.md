@@ -96,7 +96,7 @@ Tama `wordpress-platform`-repo ei omista Docker-runtimea, local stackia tai jaet
 - site-repon README:n
 - site-kohtaiset docs-pohjat
 - WordPress-painotteisen `.gitignore`:n
-- minimi `wp-content`-rungon child themelle, custom pluginille ja mu-pluginille
+- minimi `wp-content`-rungon site-kohtaiselle teemalle, custom pluginille ja mu-pluginille
 - kevyet PowerShell-tyokalut paikalliseen synkkiin ja deploy-paketin kokoamiseen
 
 Starter ei yrita olla valmis tuote. Sen tarkoitus on pakottaa oikeat boundaryt heti alkuun.
@@ -122,5 +122,9 @@ Lue ainakin:
 - [docs/multisite-decision-guide.md](./docs/multisite-decision-guide.md)
 - [docs/local-single-install-test-plan.md](./docs/local-single-install-test-plan.md)
 - [docs/repo-bootstrap-checklist.md](./docs/repo-bootstrap-checklist.md)
+
+Nykyinen local smoke -baseline todisti local sync-, packaging- ja runtime-rajan
+yhdella standalone-teemalla. Child theme + oikea parent theme -polku on edelleen
+oma erillinen follow-up-testi, ei viela lopullisesti todistettu baseline.
 
 Tavoite on yksinkertainen: jokainen sivusto pysyy omana omistajareponaan, ja shared support -kerros pysyy kevyena mutta hyodyllisena.
