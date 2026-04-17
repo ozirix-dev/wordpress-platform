@@ -4,6 +4,16 @@ Tama dokumentti kuvaa varovaisen perusmallin WordPress-perheen Hostinger-deployl
 
 Tassa passissa ei rakenneta oikeaa deploy-automaatioita, ei muuteta tiliymparistoa eika kosketa live-sivustoihin. Tavoite on rajata mita kannattaa versionoida ja mita kannattaa siirtaa Hostingeriin.
 
+Jos tarvitset Hostingerin nykyiset dokumentoidut faktat, capability-matrixin tai
+site-intake-pohjan, kayta ensin:
+
+- [docs/hostinger-parity/README.md](./hostinger-parity/README.md)
+- [docs/hostinger-parity/hostinger-current-facts.md](./hostinger-parity/hostinger-current-facts.md)
+- [docs/hostinger-parity/local-to-hostinger-parity-map.md](./hostinger-parity/local-to-hostinger-parity-map.md)
+
+Tama tiedosto on tarkoituksella yleisempi deploy-linja. Current facts -kerros
+elaa `hostinger-parity/`-osion alla.
+
 ## Peruslinja
 
 Deployoi GitHubista paaasiallisesti vain site-kohtainen WordPress-koodi:

@@ -19,6 +19,27 @@ Tama tiedosto on site-kohtainen muistio paikallisesta kehityksesta, Git-polusta 
 - Hostinger on production target vain taman sivuston osalta
 - deploy scope rajataan site-kohtaiseen `wp-content`-omistukseen
 - WordPress corea, tietokantaa, `uploads`-kirjastoa tai salaisuuksia ei tuoda GitHubista deploy-pakettiin
+- Hostinger-capabilityt varmennetaan `site-profile.md`-kenttiin ennen kuin
+  deployment-mallia pidetaan paatettyna
+
+Kirjaa tahan ainakin:
+
+- hosting plan family:
+- Hostinger website name:
+- root path:
+- public path:
+- Git deploy kaytossa: `yes | no | unknown`
+- Git install path:
+- SSH kaytossa: `yes | no | unknown`
+- PHP version:
+- database name:
+- phpMyAdmin entry path:
+- cron kaytossa: `yes | no`
+- verification date:
+- verification source:
+
+Jos tieto on edelleen plan-sensitive tai product-sensitive, kirjoita suoraan
+`verify in hPanel`.
 
 ## Staging
 
@@ -76,3 +97,8 @@ Pida rollback yksinkertaisena:
 ## Muistutus
 
 Tama tiedosto kuvaa site-kohtaisen deploy-ajattelun. Jos perheen yhteinen deploy-linja muuttuu, paatos kirjataan ensisijaisesti `D:\Projects\Support\wordpress-platform`-repoon, ei vain tahan site-repoon.
+
+Hostingerin current facts ja parity-map loytyvat shared support -repasta:
+
+- `D:\Projects\Support\wordpress-platform\docs\hostinger-parity\README.md`
+- `D:\Projects\Support\wordpress-platform\docs\hostinger-parity\local-to-hostinger-parity-map.md`

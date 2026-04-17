@@ -132,4 +132,10 @@ Nykyinen local smoke -baseline todisti local sync-, packaging- ja runtime-rajan
 yhdella standalone-teemalla. Child theme + oikea parent theme -polku on edelleen
 oma erillinen follow-up-testi, ei viela lopullisesti todistettu baseline.
 
+Seuraava isompi vaihe local smoke -vaiheen jalkeen on Hostinger parity -kerros:
+
+- [docs/hostinger-parity/README.md](./docs/hostinger-parity/README.md)
+- [docs/hostinger-parity/local-to-hostinger-parity-map.md](./docs/hostinger-parity/local-to-hostinger-parity-map.md)
+- [docs/hostinger-parity/hostinger-preflight-checklist.md](./docs/hostinger-parity/hostinger-preflight-checklist.md)
+
 Tavoite on yksinkertainen: jokainen sivusto pysyy omana omistajareponaan, ja shared support -kerros pysyy kevyena mutta hyodyllisena.
