@@ -70,3 +70,16 @@ WordPress Multisite on poikkeusmalli. Jos sivusto kuuluu multisite-verkkoon, dok
 4. Tayta `docs/deployment.md`, `docs/languages-and-locales.md` ja `docs/content-boundaries.md`.
 5. Lisaa site-kohtainen teema- ja plugin-koodi vasta sen jalkeen kun ownership-raja on dokumentoitu.
 6. Pida tuotantopolku mallissa `Local -> GitHub -> Hostinger`, mutta ala rakenna live-automaatioita liian aikaisin.
+
+## Helperit
+
+Starter sisaltaa kaksi kevytta PowerShell-apuria:
+
+- `tools/sync-to-local.ps1`
+  - synkkaa repo-managed `wp-content`-rungon paikalliseen WordPress-kohteeseen
+  - aja ensin aina `-DryRun -WhatIf`
+  - `-PurgeExtraneous` vaatii lisaksi `-AllowPurge`
+- `tools/package-deployable.ps1`
+  - kokoaa review-kelpoisen paketin repo-managed `wp-content`-poluista
+  - tukee `Directory`- ja `Zip`-artifacteja
+  - aja ensin aina `-DryRun -WhatIf`

@@ -40,6 +40,18 @@ Kirjaa tahan oma tuotantopolku:
 - miten paketti siirtyy tuotantoon:
 - kuka tarkistaa tuotantovalmiuden:
 
+## Starter-helperit
+
+Kayta tarvittaessa taman starterin apureita:
+
+- `tools/sync-to-local.ps1`
+  - tarkoitettu paikalliseen synkkiin, ei live-ymparistoon
+  - aja ensin `-DryRun -WhatIf`
+  - `-PurgeExtraneous` vaatii lisaksi `-AllowPurge`
+- `tools/package-deployable.ps1`
+  - kokoaa review-paketin site-kohtaisesta repo-managed sisallosta
+  - aja ensin `-DryRun -WhatIf`
+
 ## Rollback-ajattelu
 
 Pida rollback yksinkertaisena:
@@ -57,6 +69,7 @@ Pida rollback yksinkertaisena:
 - ei `uploads`, dumppeja, cachea tai salaisuuksia
 - multilingual-site:ssa locale-polut ja kaannoslogiikka on tarkistettu
 - rollback-polku on tiedossa ennen tuotantoonvientia
+- mahdolliset starter-helperit on ajettu ensin dry-runina
 
 ## Muistutus
 

@@ -67,6 +67,12 @@ notes: |
   - `single`
   - `multisite`
 
+Pidä kentat keskenaan johdonmukaisina:
+
+- `language_model: single` sopii normaalisti yhteen `installation_type: single`
+- `language_model: multilingual` on yleensa edelleen `installation_type: single`
+- `language_model: multisite-network` tai `multisite-subsite` edellyttaa kaytannossa `installation_type: multisite`
+
 ## Paivityssaanto
 
 Paivita tama tiedosto aina, kun:

@@ -39,6 +39,20 @@ function Resolve-OrCreateDirectory {
     return (Resolve-Path -LiteralPath $Path -ErrorAction Stop).Path
 }
 
+function Test-SafeRelativeRepoPath {
+    param([Parameter(Mandatory = $true)] [string] $Path)
+
+    if ([System.IO.Path]::IsPathRooted($Path)) {
+        return $false
+    }
+
+    if ($Path -match '(^|[\\/])\.\.([\\/]|$)') {
+        return $false
+    }
+
+    return $true
+}
+
 function New-Manifest {
     param(
         [Parameter(Mandatory = $true)]
@@ -129,11 +143,20 @@ foreach ($scope in $Scopes) {
 }
 
 foreach ($file in $ExtraFiles) {
+    if (-not (Test-SafeRelativeRepoPath -Path $file)) {
+        throw "ExtraFiles must be repo-relative safe paths without drive roots or '..': $file"
+    }
+
     $sourceFile = Join-Path $sourceRepo $file
     if (-not (Test-Path -LiteralPath $sourceFile)) {
         Write-Warning "Extra file not found in source repo and was skipped: $file"
         $warnings[$file] = 'Missing in source repo'
         continue
+    }
+
+    $resolvedSourceFile = Resolve-ExistingPath -Path $sourceFile
+    if (-not $resolvedSourceFile.StartsWith($sourceRepo, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Extra file resolved outside the source repo boundary: $file"
     }
 
     $destinationFile = Join-Path $stagingPath $file

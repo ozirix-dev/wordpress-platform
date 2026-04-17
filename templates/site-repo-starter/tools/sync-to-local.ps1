@@ -12,6 +12,7 @@ param(
     [string[]] $Scopes = @('mu-plugins', 'plugins', 'themes'),
 
     [switch] $PurgeExtraneous,
+    [switch] $AllowPurge,
     [switch] $DryRun
 )
 
@@ -78,6 +79,10 @@ try {
 }
 catch {
     throw "Could not resolve required paths. Check SourceWpContentPath and TargetWordPressPath values."
+}
+
+if ($PurgeExtraneous -and -not $AllowPurge) {
+    throw "PurgeExtraneous requires -AllowPurge. Use -DryRun -WhatIf first before any real cleanup."
 }
 
 $targetWpContent = Join-Path $targetPath 'wp-content'
