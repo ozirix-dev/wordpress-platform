@@ -16,6 +16,12 @@ ja uuden site-repon oletuspaikka on:
 
 - `D:\Projects\Products\<site-slug>`
 
+Tämän repon kanoninen nimi on `wordpress-platform`.
+GitHub-repo on nyt myös `ozirix-dev/wordpress-platform`, joten current naming on
+harmonisoitu. Historiallista `WP-Pohja`-nimeä käytetään vain audit trailissa.
+Tarkempi oma identiteettilinjaus on dokumentoitu tiedostoon
+[`repo-identity.md`](./repo-identity.md).
+
 ## Site-repon nimeaminen
 
 Suosi nimea, joka kertoo mika sivusto tai domain kyseessa on:

@@ -4,6 +4,19 @@
 
 Tama repo ei omista yhden sivuston tuotantokoodia. Sen tehtava on tarjota yhteinen docs-, starter-, naming- ja policy-kerros silloin, kun perheessa on useita erillisia WordPress-sivustoja eri kieli- ja deploy-malleilla.
 
+## Repo Identity
+
+- canonical nimi: `wordpress-platform`
+- local path: `D:\Projects\Support\wordpress-platform`
+- current GitHub handle: `ozirix-dev/wordpress-platform`
+- canonical GitHub URL: `https://github.com/ozirix-dev/wordpress-platform`
+
+Tässä repossa `wordpress-platform` on kanoninen nimi sekä paikallisessa polussa
+että GitHubissa. Historiallinen alkuperäinen GitHub-handle oli `WP-Pohja`, mutta
+se ei ole enää tämän repon current-identiteetti.
+
+Ks. tarkempi linjaus: [docs/repo-identity.md](./docs/repo-identity.md)
+
 ## Rooli umbrella-rakenteessa
 
 - `D:\Projects\_Hub\Project-Map` on umbrella- ja placement-kartta.
@@ -103,6 +116,7 @@ Starter ei yrita olla valmis tuote. Sen tarkoitus on pakottaa oikeat boundaryt h
 Lue ainakin:
 
 - [docs/architecture.md](./docs/architecture.md)
+- [docs/repo-identity.md](./docs/repo-identity.md)
 - [docs/site-types.md](./docs/site-types.md)
 - [docs/multilingual-strategy.md](./docs/multilingual-strategy.md)
 - [docs/multisite-decision-guide.md](./docs/multisite-decision-guide.md)

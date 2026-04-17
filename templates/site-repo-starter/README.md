@@ -26,6 +26,15 @@ Tassa repossa ei pideta:
 
 GitHubiin kuuluu paaasiallisesti vain se koodi ja dokumentaatio, jonka tama yksi sivusto oikeasti omistaa.
 
+Nimeämislinja kannattaa pitää heti siistinä:
+
+- local path
+- repo slug
+- GitHub handle
+
+saavat mielellään olla samaa nimeämisketjua. Jos jokin niistä poikkeaa
+väliaikaisesti, dokumentoi poikkeama heti `README.md`:ssa ja `site-profile.md`:ssa.
+
 ## Sijainti ja suhde muihin repoihin
 
 Taman site-repon oletuspolku on:
@@ -79,7 +88,9 @@ Starter sisaltaa kaksi kevytta PowerShell-apuria:
   - synkkaa repo-managed `wp-content`-rungon paikalliseen WordPress-kohteeseen
   - aja ensin aina `-DryRun -WhatIf`
   - `-PurgeExtraneous` vaatii lisaksi `-AllowPurge`
+  - skripti kieltaytyy kirjoittamasta takaisin source-repon omaan puuhun
 - `tools/package-deployable.ps1`
   - kokoaa review-kelpoisen paketin repo-managed `wp-content`-poluista
   - tukee `Directory`- ja `Zip`-artifacteja
   - aja ensin aina `-DryRun -WhatIf`
+  - `ExtraFiles` pidetaan repo-relatiivisina ja source-repon rajoissa

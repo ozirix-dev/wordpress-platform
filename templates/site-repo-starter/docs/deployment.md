@@ -48,9 +48,11 @@ Kayta tarvittaessa taman starterin apureita:
   - tarkoitettu paikalliseen synkkiin, ei live-ymparistoon
   - aja ensin `-DryRun -WhatIf`
   - `-PurgeExtraneous` vaatii lisaksi `-AllowPurge`
+  - skripti ei ole tarkoitettu source-repon omaan puuhun tai tuotantopolkuun
 - `tools/package-deployable.ps1`
   - kokoaa review-paketin site-kohtaisesta repo-managed sisallosta
   - aja ensin `-DryRun -WhatIf`
+  - salli `ExtraFiles` vain tarkoituksellisille repo-relatiivisille tiedostoille
 
 ## Rollback-ajattelu
 

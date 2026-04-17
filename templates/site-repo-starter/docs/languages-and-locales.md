@@ -55,3 +55,4 @@ Kirjaa tahan kaikki poikkeukset, joita ei pida arvata:
 - domainit ja localet vastaavat todellista julkaisumallia
 - translation workflow on nimetty, ei oletettu
 - plugin-valinta on kirjattu vain jos se on oikeasti paatetty
+- `language_model: multilingual` ei yksin tarkoita `installation_type: multisite`

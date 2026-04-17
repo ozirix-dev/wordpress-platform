@@ -16,6 +16,11 @@ Taman repon perusajatus on erottaa kolme eri vastuutasoa toisistaan:
 | Site ownership | `D:\Projects\Products\<site-slug>` | yhden sivuston kanoninen koodi, docsit ja deploy-raja |
 | Mahdollinen local platform | esimerkiksi `D:\Projects\Systems\wordpress-dev` | paikallinen dev-stack, jos sellainen tarvitaan |
 
+Tämän repon oma identiteettilinja on koottu tiedostoon
+[`docs/repo-identity.md`](./repo-identity.md), jotta canonical nimi, local path,
+current GitHub repo ja mahdolliset historialliset rename-huomiot pysyvät
+erillään.
+
 ## Oletusmalli
 
 Taman perheen oletus on:

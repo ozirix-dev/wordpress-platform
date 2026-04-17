@@ -1,6 +1,37 @@
 #!/usr/bin/env pwsh
 #Requires -Version 7.0
 
+<#
+.SYNOPSIS
+Builds a reviewable wp-content package from the current repo.
+
+.DESCRIPTION
+This helper assembles repo-managed wp-content scopes and optional extra
+repo-relative files into a directory or zip artifact for review.
+Run it with -DryRun -WhatIf first.
+
+.PARAMETER SourceRepoPath
+Repo root that contains wp-content.
+
+.PARAMETER OutputDirectory
+Directory where the package staging folder or zip will be created.
+
+.PARAMETER ArtifactType
+Output format: Directory or Zip.
+
+.PARAMETER ArtifactName
+Base name used for the generated artifact.
+
+.PARAMETER Scopes
+Managed wp-content scopes to include.
+
+.PARAMETER ExtraFiles
+Additional repo-relative files to include alongside wp-content.
+
+.PARAMETER DryRun
+Enables WhatIf-style dry-run behavior.
+#>
+
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "Medium")]
 param(
     [string] $SourceRepoPath = (Join-Path $PSScriptRoot ".."),
@@ -155,7 +186,11 @@ foreach ($file in $ExtraFiles) {
     }
 
     $resolvedSourceFile = Resolve-ExistingPath -Path $sourceFile
-    if (-not $resolvedSourceFile.StartsWith($sourceRepo, [System.StringComparison]::OrdinalIgnoreCase)) {
+    $sourceRepoBoundary = $sourceRepo.TrimEnd('\') + '\'
+    if (
+        -not $resolvedSourceFile.Equals($sourceRepo, [System.StringComparison]::OrdinalIgnoreCase) -and
+        -not $resolvedSourceFile.StartsWith($sourceRepoBoundary, [System.StringComparison]::OrdinalIgnoreCase)
+    ) {
         throw "Extra file resolved outside the source repo boundary: $file"
     }
 

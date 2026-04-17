@@ -82,3 +82,6 @@ Paivita tama tiedosto aina, kun:
 - deployment method muuttuu
 - Hostinger-target vaihtuu
 - repo ownership -raja tarkentuu
+
+Jos `site_slug`, local path ja `github_repo` eivät vastaa toisiaan, kirjaa
+poikkeama ja suunniteltu harmonisointi `notes`-kenttään heti.

@@ -1,6 +1,34 @@
 #!/usr/bin/env pwsh
 #Requires -Version 7.0
 
+<#
+.SYNOPSIS
+Copies repo-managed wp-content scopes into a local WordPress root.
+
+.DESCRIPTION
+This helper is intended for local review and development flows only.
+Run it with -DryRun -WhatIf first. Purge mode requires explicit opt-in
+through -AllowPurge.
+
+.PARAMETER TargetWordPressPath
+Target local WordPress root that contains wp-content or wp-config.php.
+
+.PARAMETER SourceWpContentPath
+Source wp-content path inside the current repo.
+
+.PARAMETER Scopes
+Managed wp-content scopes to copy.
+
+.PARAMETER PurgeExtraneous
+Remove items from the target scope when they are not present in the source.
+
+.PARAMETER AllowPurge
+Required confirmation switch for PurgeExtraneous.
+
+.PARAMETER DryRun
+Enables WhatIf-style dry-run behavior.
+#>
+
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "Medium")]
 param(
     [Parameter(Mandatory = $true)]
@@ -79,6 +107,15 @@ try {
 }
 catch {
     throw "Could not resolve required paths. Check SourceWpContentPath and TargetWordPressPath values."
+}
+
+$sourceRepoRoot = Split-Path -Path $sourceWpContent -Parent
+$sourceRepoBoundary = $sourceRepoRoot.TrimEnd('\') + '\'
+if (
+    $targetPath.Equals($sourceRepoRoot, [System.StringComparison]::OrdinalIgnoreCase) -or
+    $targetPath.StartsWith($sourceRepoBoundary, [System.StringComparison]::OrdinalIgnoreCase)
+) {
+    throw "Refusing to sync into the source repo tree. TargetWordPressPath must point to a separate local WordPress root."
 }
 
 if ($PurgeExtraneous -and -not $AllowPurge) {
