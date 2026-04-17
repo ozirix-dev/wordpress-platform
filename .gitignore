@@ -1,0 +1,29 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+.codex/
+
+# Local dependencies / temp
+node_modules/
+vendor/
+dist/
+build/
+coverage/
+
+# Local env / secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+
+# Generated artifacts
+*.log
+*.tmp
+*.bak
+tmp/**
+!tmp/.gitkeep
+

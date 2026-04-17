@@ -1,0 +1,45 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+.codex/
+
+# Local runtime
+node_modules/
+vendor/
+dist/
+build/
+coverage/
+.parcel-cache/
+.turbo/
+.next/
+
+# Environment / secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+
+# WordPress / deployment artefacts
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backups/
+wp-content/upgrade/
+wp-content/blogs.dir/
+db/
+database/
+*.sql
+*.sql.gz
+*.sql.bz2
+*.sql.zip
+
+# Local helper files
+tmp/**
+!tmp/.gitkeep
+*.log
+*.tmp
+*.swp
