@@ -3,7 +3,7 @@
 ## Site Intake Identity
 
 - intake target name: `rapukauppa.fi`
-- reviewed_on: `2026-04-17`
+- reviewed_on: `2026-04-18`
 - reviewed_by_context: `Codex`
 - data sources:
   - `wordpress-platform` Hostinger parity docs
@@ -17,6 +17,7 @@
   - live Brave + Playwright read of the Hostinger WordPress Staging page before and after staging creation
   - live Brave + Playwright read of the authenticated Cloudflare DNS Records page for `rapukauppa.fi`
   - public DNS and HTTP reachability checks against `https://staging.rapukauppa.fi/`
+  - direct origin host-header checks to `92.112.182.62` for `staging.rapukauppa.fi`
 
 ## Site Mapping
 
@@ -42,7 +43,15 @@
 - staging_available: `yes`
 - staging_current_status: `created; visible in hPanel staging list with status Completed`
 - staging_exact_url: `https://staging.rapukauppa.fi/`
-- staging_public_reachability: `blocked at verification time; DNS name did not resolve publicly`
+- staging_dns_record_name: `staging`
+- staging_dns_record_type: `A`
+- staging_dns_record_target: `92.112.182.62`
+- staging_dns_proxy_status: `DNS only`
+- staging_public_reachability: `authoritative DNS now resolves, but public HTTPS baseline is still blocked by staging-hostname SSL/TLS failure`
+- staging_baseline_front_https: `blocked; browser returned ERR_SSL_PROTOCOL_ERROR`
+- staging_baseline_wp_admin_https: `blocked; browser returned ERR_SSL_PROTOCOL_ERROR`
+- staging_baseline_wp_json_https: `blocked; browser returned ERR_SSL_PROTOCOL_ERROR`
+- staging_baseline_wp_json_http: `passed; WordPress REST index returned over HTTP after DNS unblock`
 - ssh_available: `yes`
 - ssh_enabled: `no`
 - ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
@@ -78,6 +87,17 @@
     - live Brave + Playwright attach to the already authenticated Hostinger hPanel session for `rapukauppa.fi`
   - `staging_current_status`, `staging_exact_url` and create outcome:
     - live Brave + Playwright read of the Hostinger WordPress Staging page after creating subdomain `staging`
+  - `staging_dns_record_name`:
+    - live Hostinger staging page showed exact staging hostname `staging.rapukauppa.fi`
+  - `staging_dns_record_target`:
+    - direct host-header checks to `http://92.112.182.62/`, `http://92.112.182.62/wp-admin/` and `http://92.112.182.62/wp-json/` with `Host: staging.rapukauppa.fi`
+    - front returned `200 OK`
+    - `wp-admin` returned `302 Found` redirecting to `https://staging.rapukauppa.fi/wp-admin/`
+    - `wp-json` returned `200 OK` with a WordPress REST index
+  - `staging_dns_proxy_status`:
+    - live Cloudflare zone state already fronts existing public web hostnames through Cloudflare
+    - the first write was tested as `Proxied`, but direct public checks through Cloudflare returned `525`
+    - the same single staging record was then corrected to `DNS only`
   - `active PHP version`:
     - live Brave + Playwright DOM read from the checked radio input on the PHP Configuration page
   - `account_home_path`:
@@ -87,21 +107,25 @@
   - `additional database row is not mapped to rapukauppa.fi`:
     - live Brave + Playwright row read from MySQL Database Management where the Website column showed `Assign`
   - `staging_public_reachability`:
-    - `Resolve-DnsName staging.rapukauppa.fi`
-    - `Invoke-WebRequest https://staging.rapukauppa.fi/`
-    - `Invoke-WebRequest https://staging.rapukauppa.fi/wp-admin/`
-    - `Invoke-WebRequest https://staging.rapukauppa.fi/wp-json/`
-    - live Brave + Playwright read of the authenticated Cloudflare DNS Records page, which showed only apex `A` and `www` `CNAME` records for `rapukauppa.fi`
+    - pre-write `Resolve-DnsName staging.rapukauppa.fi` returned `DNS name does not exist`
+    - live Brave + Playwright read of the authenticated Cloudflare DNS Records page initially showed only apex `A` and `www` `CNAME` records for `rapukauppa.fi`
+    - live Brave + Playwright write created `A staging 92.112.182.62` and initially left it `Proxied`
+    - authoritative `Resolve-DnsName staging.rapukauppa.fi -Server nola.ns.cloudflare.com` then returned Cloudflare edge IPs
+    - direct public checks through Cloudflare edge returned `525`
+    - live Brave + Playwright write corrected the same single staging record to `DNS only`
+    - authoritative `Resolve-DnsName staging.rapukauppa.fi -Server nola.ns.cloudflare.com` then returned `92.112.182.62`
+    - browser checks to `https://staging.rapukauppa.fi/`, `https://staging.rapukauppa.fi/wp-admin/` and `https://staging.rapukauppa.fi/wp-json/` then returned `ERR_SSL_PROTOCOL_ERROR`
+    - browser check to `http://staging.rapukauppa.fi/wp-json/` returned a WordPress REST index
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
 ## Unknown / Not Yet Verified
 
 - no blocker-level capability unknowns remain in the current deploy-contract baseline
-- public staging baseline checks are currently blocked, not unknown:
+- public staging baseline checks are now more precise, not green:
   - Hostinger shows staging as created and completed
-  - public DNS for `staging.rapukauppa.fi` did not resolve at verification time
-  - because the staging hostname does not resolve publicly yet, front page, `wp-admin` and `wp-json` checks could not be completed in this pass
+  - authoritative Cloudflare DNS now resolves `staging.rapukauppa.fi` to `92.112.182.62`
+  - HTTPS front page, `wp-admin` and `wp-json` are still blocked by staging-hostname SSL/TLS failure rather than missing DNS
 - not audited in this pass:
   - field-by-field PHP extension and option overrides beyond the active version `PHP 8.3`
 
@@ -137,18 +161,21 @@ Perustelu:
 - staging capability is visible in hPanel and the first staging environment now exists at `https://staging.rapukauppa.fi/`
 - Git deploy capability is visible in hPanel, but no repository is configured
 - SSH capability is visible, but it is currently `INACTIVE`
-- public staging baseline verification is still blocked because `staging.rapukauppa.fi` does not currently resolve in public DNS
-- therefore the safest first site-specific deployment path is still a manual artifact flow with staging as the preferred first boundary, but the next concrete blocker is now DNS reachability rather than missing staging capability
+- the staging DNS record is now present as `A staging -> 92.112.182.62`
+- the final chosen proxy status is `DNS only` because the initial proxied test returned Cloudflare `525` and the pass objective was to expose Hostinger staging with the smallest working DNS change
+- public staging baseline verification is still blocked, but now by staging-hostname SSL/TLS failure instead of missing DNS
+- therefore the safest first site-specific deployment path is still a manual artifact flow with staging as the preferred first boundary, but the next concrete blocker is now staging TLS readiness rather than missing staging capability or missing DNS
 
 ## Risks / Caveats
 
 - Hostinger capability flags remain partly plan-sensitive and hPanel-sensitive
 - the copied Brave profile did not preserve reusable authenticated sessions for GitHub, Cloudflare or Hostinger in Playwright, so the reliable browser path currently depends on relaunching live Brave with remote debugging enabled
 - the public WordPress surface can drift independently from the local repo until the first controlled site-code adoption pass is complete
-- the first staging subdomain now exists in Hostinger, but public reachability is blocked until the authoritative DNS layer exposes `staging.rapukauppa.fi`
+- the first staging subdomain now exists in Hostinger and the authoritative DNS layer exposes `staging.rapukauppa.fi`
+- the remaining blocker is HTTPS readiness on the staging hostname; current browser reads return `ERR_SSL_PROTOCOL_ERROR`
 - do not store secrets, database passwords or SSH private keys in repo docs
 - do not treat `phpmyadmin_entry_path` as proof that the correct database is already mapped; it is only the current Hostinger direct entry URL pattern
 
 ## Recommended Next Step
 
-- tee erillinen pieni DNS-pass, jossa lisataan tai varmennetaan `staging.rapukauppa.fi` nykyiseen Cloudflare-zoneseen, ja aja vasta sen jalkeen staging-frontin, `wp-admin`-polun ja `wp-json`-pinnan baseline-check uudelleen
+- tee erillinen kapea Hostinger/SSL follow-up, joka selvittaa miksi `https://staging.rapukauppa.fi/` palauttaa `ERR_SSL_PROTOCOL_ERROR`, ja aja vasta sen jalkeen staging-frontin, `wp-admin`-polun ja `wp-json`-pinnan HTTPS-baseline-check uudelleen
