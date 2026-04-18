@@ -64,6 +64,30 @@
 - staging_first_verified_site_code_runtime_result: `passed; /wp-json/rapukauppa/v1/runtime now returns site rapukauppa.fi, environment staging, theme twentytwentyfive, and version 0.1.1`
 - staging_first_verified_site_code_header_result: `passed; staging responses now emit X-Rapukauppa-Site and X-Rapukauppa-Environment`
 - staging_first_verified_site_code_production_non_impact: `passed; production front does not show the footer note and production /wp-json/rapukauppa/v1/runtime still returns 404`
+- staging_child_theme_bootstrap_pass: `passed`
+- staging_child_theme_slug: `rapukauppa-runtime-surface`
+- staging_child_theme_parent: `twentytwentyfive`
+- staging_child_theme_repo_files:
+  - `wp-content/themes/rapukauppa-runtime-surface/style.css`
+  - `wp-content/themes/rapukauppa-runtime-surface/functions.php`
+- staging_child_theme_apply_scope:
+  - `one new theme directory under /home/u963025419/domains/rapukauppa.fi/public_html/staging/wp-content/themes/`
+  - `two uploaded files only`
+  - `one staging-only theme activation`
+- staging_child_theme_runtime_result:
+  - `staging wp-admin Themes now shows Active: Rapukauppa Runtime Surface`
+  - `public staging front now includes body class wp-child-theme-rapukauppa-runtime-surface`
+  - `/wp-json/rapukauppa/v1/runtime now returns theme rapukauppa-runtime-surface and version 0.1.1`
+- staging_child_theme_zero_regression:
+  - `front passed`
+  - `wp-admin passed`
+  - `wp-json passed`
+  - `existing mu-plugin footer note remains visible`
+  - `no revert was needed`
+- staging_child_theme_production_non_impact:
+  - `production wp-admin Themes still shows Active: Twenty Twenty-Five`
+  - `production front body class remains wp-theme-twentytwentyfive`
+  - `production /wp-json/rapukauppa/v1/runtime still returns 404`
 - ssh_available: `yes`
 - ssh_enabled: `no`
 - ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
@@ -140,6 +164,15 @@
     - `curl https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime?cb=sitepass1` returned environment `staging`, theme `twentytwentyfive`, and version `0.1.1`
     - public staging front output now includes the footer note `Sivustoa kehitetään jatkuvasti paremman ostokokemuksen tueksi.`
     - production checks confirmed that the same footer note is absent on `https://rapukauppa.fi/` and that `https://rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returns `404`
+  - `staging_child_theme_bootstrap_pass`:
+    - Hostinger hosting-plan File Browser accepted a new directory under `domains/rapukauppa.fi/public_html/staging/wp-content/themes/rapukauppa-runtime-surface`
+    - the same File Browser accepted exactly two uploaded child-theme files: `style.css` and `functions.php`
+    - Hostinger staging dashboard `Staging Admin Panel` opened an authenticated staging wp-admin session
+    - staging `wp-admin/themes.php` changed from `Active: Twenty Twenty-Five` to `Active: Rapukauppa Runtime Surface`
+    - `curl https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime?cb=childbootstrap1` returned theme `rapukauppa-runtime-surface`
+    - public staging front kept returning `200 OK`, still showed the existing repo-owned footer note, and added body class `wp-child-theme-rapukauppa-runtime-surface`
+    - production `wp-admin/themes.php` still showed `Active: Twenty Twenty-Five`
+    - production front body class remained `wp-theme-twentytwentyfive`
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -151,9 +184,13 @@
   - Hostinger SSL page shows `staging.rapukauppa.fi` in state `Lifetime SSL / Active`
   - authoritative Cloudflare DNS resolves `staging.rapukauppa.fi` to `92.112.182.62`
   - HTTPS front page, `wp-admin` and `wp-json` now respond successfully
+- staging now has a verified repo-owned runtime theme surface:
+  - active staging theme is `rapukauppa-runtime-surface`
+  - parent theme is `twentytwentyfive`
+  - production remains on `twentytwentyfive`
 - user-confirmed but not yet directly re-verified in this intake:
   - `GeneratePress` theme is installed in the runtime but not in active use
-  - do not treat this as proof that the active staging theme has changed away from the last verified value `twentytwentyfive`
+  - do not treat this as proof that `GeneratePress` is the chosen runtime base
 - not audited in this pass:
   - field-by-field PHP extension and option overrides beyond the active version `PHP 8.3`
 
@@ -194,6 +231,7 @@ Perustelu:
 - Hostinger now shows the staging hostname in SSL state `Lifetime SSL / Active`
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
+- the next safe write-pass can now target the repo-owned child theme surface instead of adding more presentation logic to the mu-plugin
 
 ## Risks / Caveats
 
@@ -207,4 +245,4 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee seuraava pieni repo-owned front-end parannus, mieluiten theme- tai template-tasolla, nyt kun stagingin aktiivinen file-root ja mu-plugin apply-polku on varmennettu onnistuneesti ennen productioniin liittyvia paatoksia
+- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun stagingissa on ensin varmennettu repo-owned runtime theme surface ilman regressiota
