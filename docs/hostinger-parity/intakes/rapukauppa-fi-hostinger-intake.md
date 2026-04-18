@@ -151,6 +151,9 @@
   - Hostinger SSL page shows `staging.rapukauppa.fi` in state `Lifetime SSL / Active`
   - authoritative Cloudflare DNS resolves `staging.rapukauppa.fi` to `92.112.182.62`
   - HTTPS front page, `wp-admin` and `wp-json` now respond successfully
+- user-confirmed but not yet directly re-verified in this intake:
+  - `GeneratePress` theme is installed in the runtime but not in active use
+  - do not treat this as proof that the active staging theme has changed away from the last verified value `twentytwentyfive`
 - not audited in this pass:
   - field-by-field PHP extension and option overrides beyond the active version `PHP 8.3`
 
