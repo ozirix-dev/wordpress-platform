@@ -299,6 +299,16 @@
     - `https://rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
     - production `style.css` moved from `0.1.7` to `0.1.8` and matched staging sha256 exactly
     - mobile browser computed styles for `.wp-block-post .wp-block-post-content`, `.wp-block-post-content p`, and `.wp-block-post-date` now match exactly between staging and production
+  - `staging_ninth_child_theme_frontend_pass`:
+    - host-key-verified SCP replace-uploaded exactly one existing child-theme file: `style.css`
+    - `https://staging.rapukauppa.fi/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
+    - the repo-owned footer note remained visible in the staging DOM
+    - cache-busted public staging CSS now resolves to `0.1.9` and exposes `.wp-block-post .wp-block-post-content p { margin-bottom: 0.375rem; }`
+    - staging remote `style.css` sha256 now matches the local repo at `913f6d73e5e69ed3585f975cd57e709a8946f5ee947c45f9cfe19d12394397eb`
+    - production remote `style.css` remains at verified file baseline `0.1.8`, but the plain public production CSS URL and normal mobile production front still surfaced an older cached `0.1.6` response during this pass
+    - staging screenshot comparison showed a calmer mobile excerpt/date handoff than in the immediate before baseline
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -316,9 +326,11 @@
 - current production runtime truth is now also `rapukauppa-runtime-surface`
   on parent `twentytwentyfive`
 - current child-theme drift note:
-  - staging `style.css` is now at `0.1.8`
-  - production `style.css` is now also at `0.1.8`
-  - staging and production `style.css` now share the same verified sha256 again
+  - staging `style.css` file is now at `0.1.9`
+  - production `style.css` file remains at `0.1.8`
+  - staging `style.css` sha256 is now `913f6d73e5e69ed3585f975cd57e709a8946f5ee947c45f9cfe19d12394397eb`
+  - production `style.css` sha256 remains `188fba3de057b54f015f28e902ca943c555b6409b935bec7855a36072fd50a62`
+  - cache-busted public CSS reads match those file versions, while the plain public production CSS URL still surfaced an older cached `0.1.6` response during this pass
   - `functions.php` matches between staging and production
 - user-confirmed but not yet directly re-verified in this intake:
   - `GeneratePress` theme is installed in the runtime but not in active use
@@ -364,8 +376,9 @@ Perustelu:
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
 - the current child-theme surface has now absorbed seven safe CSS-only passes without regressions on staging
-- the explicit production promotion pass has now aligned staging and production again at `0.1.8`
-- therefore the next safe write-pass may continue staging-first refinement work, but production must again move only through an explicit manual promotion
+- the earlier explicit production promotion aligned the shared file baseline at `0.1.8`
+- the new excerpt/body stack pass now reopens a narrow staging-first `style.css` drift to `0.1.9` versus production file baseline `0.1.8`
+- therefore the next safe write-pass may be an explicit manual production promotion if this new staging-only refinement is accepted
 
 ## Risks / Caveats
 
