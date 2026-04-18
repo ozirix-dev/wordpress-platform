@@ -143,6 +143,16 @@
   - Hostinger website inventory exposed the website `root_directory` as the public web root.
   - hPanel File Manager exposes a website-specific access mode and a broader hosting-plan access mode as separate choices.
   - The Cron Jobs form exposed the account-home prefix `/home/u963025419/`, which closes the parent path interpretation together with the verified public path.
+- runtime_reconciliation_2026_04_18:
+  - `wp-admin/themes.php was not available read-only in either environment because both staging and production redirected themes.php to wp-login.php`
+  - `active theme was therefore locked from public body classes, the repo-owned runtime route, public child-theme CSS reads, and authenticated Hostinger File Browser read-only checks`
+  - `current active theme in staging: rapukauppa-runtime-surface on parent twentytwentyfive`
+  - `current active theme in production: rapukauppa-runtime-surface on parent twentytwentyfive`
+  - `staging style.css version: 0.1.6`
+  - `production style.css version: 0.1.5`
+  - `staging functions.php and production functions.php were read from Hostinger File Browser and match exactly`
+  - `grounded interpretation: production is already on the same child-theme slug, but staging is ahead in style.css content by one verified pass`
+  - `release contract recommendation: B - staging and production are already partially coupled and need immediate contract tightening before more staging-only CSS work`
 - verification_source:
   - `rapukauppa.fi`, `is_enabled`, `order_id`, `username` and `public_path`:
     - Hostinger API `GET /api/hosting/v1/websites`
@@ -272,7 +282,12 @@
 - staging now has a verified repo-owned runtime theme surface:
   - active staging theme is `rapukauppa-runtime-surface`
   - parent theme is `twentytwentyfive`
-  - production remains on `twentytwentyfive`
+- current production runtime truth is now also `rapukauppa-runtime-surface`
+  on parent `twentytwentyfive`
+- current child-theme drift note:
+  - staging `style.css` is at `0.1.6`
+  - production `style.css` is at `0.1.5`
+  - `functions.php` matches between staging and production
 - user-confirmed but not yet directly re-verified in this intake:
   - `GeneratePress` theme is installed in the runtime but not in active use
   - do not treat this as proof that `GeneratePress` is the chosen runtime base
@@ -316,7 +331,8 @@ Perustelu:
 - Hostinger now shows the staging hostname in SSL state `Lifetime SSL / Active`
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
-- the current child-theme surface has now absorbed six safe CSS-only passes without regressions, so the next safe write-pass can move to another single UI area inside that same child theme without needing a template override yet
+- the current child-theme surface has now absorbed six safe CSS-only passes without regressions on staging, but production is also verified on the child theme with older CSS
+- therefore the next safe write-pass is not another CSS refinement; it is an explicit release-contract tightening pass that reconciles the production baseline against staging on purpose
 
 ## Risks / Caveats
 
@@ -324,6 +340,7 @@ Perustelu:
 - the copied Brave profile did not preserve reusable authenticated sessions for GitHub, Cloudflare or Hostinger in Playwright, so the reliable browser path currently depends on relaunching live Brave with remote debugging enabled
 - the public WordPress surface can drift independently from the local repo until the first controlled site-code adoption pass is complete
 - the current public production surface now also shows `wp-child-theme-rapukauppa-runtime-surface` and a live production runtime route, so production non-impact for future staging-only CSS passes must be checked against public CSS version/rule drift rather than only by child-theme-class absence
+- earlier pass-level production non-impact bullets in this intake are historical snapshots and no longer describe the current production truth by themselves
 - the first staging subdomain now exists in Hostinger and the authoritative DNS layer exposes `staging.rapukauppa.fi`
 - Cloudflare keeps the staging hostname in `DNS only`, so the staging origin IP remains directly exposed by design during this current staging-first bootstrap model
 - do not store secrets, database passwords or SSH private keys in repo docs
@@ -331,4 +348,7 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun kuusi child-theme-first CSS refinement -passia on jo varmennettu ilman regressiota; pidä seuraavakin passi yhden uuden UI-alueen sisalla ilman template overridea
+- tee seuraava tarkoituksellinen write-pass production runtime truthin pohjalta:
+  - lukitse, pysyyko staging tarkoituksella productionia edella
+  - paata, promotoidaanko stagingin nykyinen child-theme CSS productioniin vai jataanko production tietoisesti versioon `0.1.5`
+  - vasta taman explicit release-contract -paatoksen jalkeen jatka uusia CSS refinement -passeja
