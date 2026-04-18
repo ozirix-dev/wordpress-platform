@@ -277,6 +277,13 @@
     - the repo-owned footer note remained visible on the public staging front
     - browser computed styles for `.wp-block-post-date` and `.wp-block-post-content p` showed staging `rgb(109, 109, 109)` and `rgb(31, 31, 31)`, while production remained at `rgb(92, 92, 92)` and `rgb(17, 17, 17)`
     - staging screenshot comparison showed the metadata receding more clearly from the body copy without layout changes
+  - `production_css_promotion_0_1_7_pass`:
+    - one production child-theme file replace-uploaded exactly one existing file: `style.css`
+    - `https://rapukauppa.fi/` still returned `200 OK`
+    - `https://rapukauppa.fi/wp-json/` still returned `200 OK`
+    - `https://rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
+    - production `style.css` moved from `0.1.6` to `0.1.7` and matched staging sha256 exactly
+    - browser computed styles for `.wp-block-post-date` and `.wp-block-post-content p` now match exactly between staging and production at `rgb(109, 109, 109)` and `rgb(31, 31, 31)`
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -295,8 +302,8 @@
   on parent `twentytwentyfive`
 - current child-theme drift note:
   - staging `style.css` is now at `0.1.7`
-  - production `style.css` remains at the last explicit baseline `0.1.6`
-  - the current verified drift is again `style.css`-only
+  - production `style.css` is now also at `0.1.7`
+  - staging and production `style.css` now share the same verified sha256 again
   - `functions.php` matches between staging and production
 - user-confirmed but not yet directly re-verified in this intake:
   - `GeneratePress` theme is installed in the runtime but not in active use
@@ -342,7 +349,7 @@ Perustelu:
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
 - the current child-theme surface has now absorbed seven safe CSS-only passes without regressions on staging
-- the last explicitly aligned staging/production baseline remains `0.1.6`, while staging now carries one new staging-only refinement at `0.1.7`
+- the explicit production promotion pass has now aligned staging and production again at `0.1.7`
 - therefore the next safe write-pass may continue staging-first refinement work, but production must again move only through an explicit manual promotion
 
 ## Risks / Caveats
@@ -360,5 +367,6 @@ Perustelu:
 ## Recommended Next Step
 
 - tee seuraava tarkoituksellinen write-pass nykyisen staging-first contractin paalta:
-  - joko jatka seuraavaan uuteen child-theme CSS refinementiin ensin stagingissa
-  - tai promotoi nyt verified metadata/body contrast -passi tuotantoon erillisella explicit manual promotion -passilla
+  - valitse seuraava uusi child-theme CSS refinement ensin stagingiin
+  - varmista se stagingissa
+  - promotoi se tuotantoon vasta erillisella explicit manual promotion -passilla
