@@ -149,10 +149,11 @@
   - `current active theme in staging: rapukauppa-runtime-surface on parent twentytwentyfive`
   - `current active theme in production: rapukauppa-runtime-surface on parent twentytwentyfive`
   - `staging style.css version: 0.1.6`
-  - `production style.css version: 0.1.5`
-  - `staging functions.php and production functions.php were read from Hostinger File Browser and match exactly`
-  - `grounded interpretation: production is already on the same child-theme slug, but staging is ahead in style.css content by one verified pass`
-  - `release contract recommendation: B - staging and production are already partially coupled and need immediate contract tightening before more staging-only CSS work`
+  - `production style.css version: 0.1.6`
+  - `staging and production style.css now share sha256 d4ff38f619537a80962d709bb52b7a8367bd684bea099b93d9e4902cb990159f`
+  - `staging functions.php and production functions.php were read from Hostinger file-state tooling and match exactly`
+  - `grounded interpretation: the previously verified child-theme drift was style.css-only and is now resolved by one explicit production promotion from the verified staging baseline`
+  - `release contract recommendation: future refinements may continue staging-first, but production must move only by separate explicit manual promotion`
 - verification_source:
   - `rapukauppa.fi`, `is_enabled`, `order_id`, `username` and `public_path`:
     - Hostinger API `GET /api/hosting/v1/websites`
@@ -286,7 +287,8 @@
   on parent `twentytwentyfive`
 - current child-theme drift note:
   - staging `style.css` is at `0.1.6`
-  - production `style.css` is at `0.1.5`
+  - production `style.css` is now also at `0.1.6`
+  - staging and production `style.css` now share the same verified sha256
   - `functions.php` matches between staging and production
 - user-confirmed but not yet directly re-verified in this intake:
   - `GeneratePress` theme is installed in the runtime but not in active use
@@ -331,8 +333,8 @@ Perustelu:
 - Hostinger now shows the staging hostname in SSL state `Lifetime SSL / Active`
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
-- the current child-theme surface has now absorbed six safe CSS-only passes without regressions on staging, but production is also verified on the child theme with older CSS
-- therefore the next safe write-pass is not another CSS refinement; it is an explicit release-contract tightening pass that reconciles the production baseline against staging on purpose
+- the current child-theme surface has now absorbed six safe CSS-only passes without regressions on staging and the same verified baseline is now aligned to production
+- therefore the next safe write-pass may return to a new staging-first CSS refinement, but production must again move only through an explicit manual promotion
 
 ## Risks / Caveats
 
@@ -348,7 +350,7 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee seuraava tarkoituksellinen write-pass production runtime truthin pohjalta:
-  - lukitse, pysyyko staging tarkoituksella productionia edella
-  - paata, promotoidaanko stagingin nykyinen child-theme CSS productioniin vai jataanko production tietoisesti versioon `0.1.5`
-  - vasta taman explicit release-contract -paatoksen jalkeen jatka uusia CSS refinement -passeja
+- tee seuraava tarkoituksellinen write-pass nykyisen aligned baselinen paalta:
+  - valitse seuraava uusi child-theme CSS refinement ensin stagingiin
+  - varmista se stagingissa
+  - promotoi se tuotantoon vasta erillisella explicit manual promotion -passilla
