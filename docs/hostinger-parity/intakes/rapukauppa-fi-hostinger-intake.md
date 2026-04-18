@@ -242,6 +242,14 @@
     - the repo-owned footer note remained visible on the public staging front
     - mobile browser computed styles for `.wp-block-post-content p` showed staging `font-size: 17px` and `line-height: 30.6px`, while production remained at `font-size: 16.1372px` and `line-height: 22.5921px`
     - mobile staging screenshot comparison showed the body copy breathing more comfortably than before
+  - `staging_fifth_child_theme_frontend_pass`:
+    - Hostinger hosting-plan File Browser replace-uploaded exactly one existing child-theme file: `style.css`
+    - `https://staging.rapukauppa.fi/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
+    - the repo-owned footer note remained visible on the public staging front
+    - mobile browser computed styles for `.wp-block-post-title`, `.wp-block-post-date`, and `.wp-block-post-content` showed staging `margin-bottom: 4px`, `margin-top: 10px`, and `margin-top: 14px`, while production remained at `0px`, `30px`, and `19.2px`
+    - mobile staging screenshot comparison showed the title-date-intro stack reading tighter and more coherent than before
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -300,7 +308,7 @@ Perustelu:
 - Hostinger now shows the staging hostname in SSL state `Lifetime SSL / Active`
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
-- the current child-theme surface has now absorbed four safe CSS-only passes without regressions, so the next safe write-pass can move to another single UI area inside that same child theme without needing a template override yet
+- the current child-theme surface has now absorbed five safe CSS-only passes without regressions, so the next safe write-pass can move to another single UI area inside that same child theme without needing a template override yet
 
 ## Risks / Caveats
 
@@ -314,4 +322,4 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun nelja child-theme-first CSS refinement -passia on jo varmennettu ilman regressiota; pidä seuraavakin passi yhden uuden UI-alueen sisalla ilman template overridea
+- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun viisi child-theme-first CSS refinement -passia on jo varmennettu ilman regressiota; pidä seuraavakin passi yhden uuden UI-alueen sisalla ilman template overridea
