@@ -107,6 +107,24 @@
 - staging_first_child_theme_frontend_production_non_impact:
   - `production front remained on wp-theme-twentytwentyfive`
   - `production stayed off the child theme, so the new child-theme link treatment did not appear there`
+- staging_second_child_theme_frontend_pass: `passed`
+- staging_second_child_theme_frontend_repo_file:
+  - `wp-content/themes/rapukauppa-runtime-surface/style.css`
+- staging_second_child_theme_frontend_change:
+  - `the post body paragraph now uses a narrower readable measure and a taller line height from the child theme`
+- staging_second_child_theme_frontend_apply_scope:
+  - `one style.css replace-upload only inside the existing staging child-theme directory`
+- staging_second_child_theme_frontend_verification:
+  - `front passed`
+  - `wp-admin passed`
+  - `wp-json passed`
+  - `runtime route remained healthy`
+  - `existing mu-plugin footer note remained visible`
+  - `browser computed-style comparison showed staging .wp-block-post-content p at max-width 583.617px and line-height 29.6464px versus production max-width 645px and line-height 25.2px`
+  - `staging screenshot comparison showed the body copy wrapping earlier than before`
+- staging_second_child_theme_frontend_production_non_impact:
+  - `production front remained on wp-theme-twentytwentyfive`
+  - `production stayed off the child theme, so the new post-body readability treatment did not appear there`
 - ssh_available: `yes`
 - ssh_enabled: `no`
 - ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
@@ -200,6 +218,14 @@
     - `https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
     - the repo-owned footer note remained visible on the public staging front
     - browser computed styles for `.wp-block-post-title a` showed a larger `text-underline-offset` on staging than on production, confirming the child-theme CSS was live only on staging
+  - `staging_second_child_theme_frontend_pass`:
+    - Hostinger hosting-plan File Browser replace-uploaded exactly one existing child-theme file: `style.css`
+    - `https://staging.rapukauppa.fi/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
+    - the repo-owned footer note remained visible on the public staging front
+    - browser computed styles for `.wp-block-post-content p` showed staging `max-width: 583.617px` and `line-height: 29.6464px`, while production remained at `max-width: 645px` and `line-height: 25.2px`
+    - staging screenshot comparison showed the post body copy wrapping earlier than before, confirming the readability change visually
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -272,4 +298,4 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun ensimmainen child-theme-first CSS micro-improvement on jo varmennettu ilman regressiota
+- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun kaksi ensimmaista child-theme-first CSS micro-improvement -passia on jo varmennettu ilman regressiota
