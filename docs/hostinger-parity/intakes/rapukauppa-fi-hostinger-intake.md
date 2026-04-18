@@ -226,6 +226,14 @@
     - the repo-owned footer note remained visible on the public staging front
     - browser computed styles for `.wp-block-post-content p` showed staging `max-width: 583.617px` and `line-height: 29.6464px`, while production remained at `max-width: 645px` and `line-height: 25.2px`
     - staging screenshot comparison showed the post body copy wrapping earlier than before, confirming the readability change visually
+  - `staging_third_child_theme_frontend_pass`:
+    - Hostinger hosting-plan File Browser replace-uploaded exactly one existing child-theme file: `style.css`
+    - `https://staging.rapukauppa.fi/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
+    - the repo-owned footer note remained visible on the public staging front
+    - browser computed styles for `.wp-block-post-date` showed staging `margin-top: 18px`, `color: rgb(92, 92, 92)`, `font-weight: 600`, `letter-spacing: 0.56px`, and uppercase text, while production remained at `margin-top: 30px`, `color: rgb(104, 104, 104)`, `font-weight: 300`, `letter-spacing: -0.1px`, and normal case
+    - staging screenshot comparison showed the date metadata sitting closer to the title and reading more intentionally than before
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -284,7 +292,7 @@ Perustelu:
 - Hostinger now shows the staging hostname in SSL state `Lifetime SSL / Active`
 - public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
-- the next safe write-pass can now target the repo-owned child theme surface instead of adding more presentation logic to the mu-plugin
+- the current child-theme surface has now absorbed three safe CSS-only passes without regressions, so the next safe write-pass can move to another single UI area inside that same child theme without needing a template override yet
 
 ## Risks / Caveats
 
@@ -298,4 +306,4 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun kaksi ensimmaista child-theme-first CSS micro-improvement -passia on jo varmennettu ilman regressiota
+- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun kolme child-theme-first CSS refinement -passia on jo varmennettu ilman regressiota; pidä seuraavakin passi yhden uuden UI-alueen sisalla ilman template overridea
