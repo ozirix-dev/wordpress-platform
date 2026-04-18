@@ -88,6 +88,25 @@
   - `production wp-admin Themes still shows Active: Twenty Twenty-Five`
   - `production front body class remains wp-theme-twentytwentyfive`
   - `production /wp-json/rapukauppa/v1/runtime still returns 404`
+- staging_first_child_theme_frontend_pass: `passed`
+- staging_first_child_theme_frontend_repo_files:
+  - `wp-content/themes/rapukauppa-runtime-surface/style.css`
+  - `wp-content/themes/rapukauppa-runtime-surface/functions.php`
+- staging_first_child_theme_frontend_change:
+  - `the child stylesheet is now enqueued explicitly after the parent stylesheet`
+  - `the post-title link now gets a clearer underline offset/thickness and focus-visible outline from the child theme`
+- staging_first_child_theme_frontend_apply_scope:
+  - `two file replacements only inside the existing staging child-theme directory`
+- staging_first_child_theme_frontend_verification:
+  - `front passed`
+  - `wp-admin passed`
+  - `wp-json passed`
+  - `runtime route remained healthy`
+  - `existing mu-plugin footer note remained visible`
+  - `browser computed-style comparison showed a larger underline offset on staging than on production for the post-title link`
+- staging_first_child_theme_frontend_production_non_impact:
+  - `production front remained on wp-theme-twentytwentyfive`
+  - `production stayed off the child theme, so the new child-theme link treatment did not appear there`
 - ssh_available: `yes`
 - ssh_enabled: `no`
 - ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
@@ -173,6 +192,14 @@
     - public staging front kept returning `200 OK`, still showed the existing repo-owned footer note, and added body class `wp-child-theme-rapukauppa-runtime-surface`
     - production `wp-admin/themes.php` still showed `Active: Twenty Twenty-Five`
     - production front body class remained `wp-theme-twentytwentyfive`
+  - `staging_first_child_theme_frontend_pass`:
+    - local PHP lint passed after updating `functions.php`
+    - Hostinger hosting-plan File Browser replace-uploaded exactly two existing child-theme files: `style.css` and `functions.php`
+    - `https://staging.rapukauppa.fi/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/` still returned `200 OK`
+    - `https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime` still returned theme `rapukauppa-runtime-surface` and version `0.1.1`
+    - the repo-owned footer note remained visible on the public staging front
+    - browser computed styles for `.wp-block-post-title a` showed a larger `text-underline-offset` on staging than on production, confirming the child-theme CSS was live only on staging
   - `initial copied-profile auth-check`:
     - copied Brave profile landed on public/log-in pages for GitHub, Cloudflare and Hostinger rather than a reusable authenticated session, so the reliable browser read path became live Brave attach over remote debugging
 
@@ -245,4 +272,4 @@ Perustelu:
 
 ## Recommended Next Step
 
-- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun stagingissa on ensin varmennettu repo-owned runtime theme surface ilman regressiota
+- tee seuraava pieni repo-owned front-end parannus child theme -tasolla polussa `wp-content/themes/rapukauppa-runtime-surface/`, nyt kun ensimmainen child-theme-first CSS micro-improvement on jo varmennettu ilman regressiota
