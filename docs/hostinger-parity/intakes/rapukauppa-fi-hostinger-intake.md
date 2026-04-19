@@ -154,6 +154,16 @@
   - `staging functions.php and production functions.php were read from Hostinger file-state tooling and match exactly`
   - `grounded interpretation: the previously verified child-theme drift was style.css-only and is now resolved by one explicit production promotion from the verified staging baseline`
   - `release contract recommendation: future refinements may continue staging-first, but production must move only by separate explicit manual promotion`
+- staging_woocommerce_foundation_2026_04_19:
+  - `WooCommerce 10.7.0 is now installed and active in staging`
+  - `production plugin surface still excludes WooCommerce`
+  - `staging now has the first commerce baseline pages: Kauppa, Ostoskori, Kassa, Oma tili`
+  - `staging now has the first commerce baseline settings: EUR, FI-only country scope, guest checkout enabled, taxes disabled for the initial baseline`
+  - `staging now has one first shipping zone Suomi with flat rate 0 and one first payment baseline Tilisiirto`
+  - `staging now has four first product categories and four first simple products`
+  - `repo child-theme functions.php now declares WooCommerce support and staging child-theme style.css now resolves to 0.2.0`
+  - `verification used the repo-canonical Brave + Playwright browser path and confirmed shop, single-product, cart, and checkout rendering on staging`
+  - `the first automated add-to-cart click was flaky, but the cart and checkout path was still verified through a direct add-to-cart URL session flow in Brave`
 - verification_source:
   - `rapukauppa.fi`, `is_enabled`, `order_id`, `username` and `public_path`:
     - Hostinger API `GET /api/hosting/v1/websites`
