@@ -127,9 +127,11 @@ Lue ainakin:
 - [docs/multisite-decision-guide.md](./docs/multisite-decision-guide.md)
 - [docs/local-single-install-test-plan.md](./docs/local-single-install-test-plan.md)
 - [docs/repo-bootstrap-checklist.md](./docs/repo-bootstrap-checklist.md)
+- [docs/tmp-artifacts-and-baselines.md](./docs/tmp-artifacts-and-baselines.md)
 
-Nykyinen local smoke -baseline todisti local sync-, packaging- ja runtime-rajan
-yhdella standalone-teemalla. Child theme + oikea parent theme -polku on edelleen
+2026-04-17 local smoke -baseline todisti local sync-, packaging- ja runtime-rajan
+yhdella standalone-teemalla. Child theme + oikea parent theme -polku oli sen
+jalkeen edelleen
 oma erillinen follow-up-testi, ei viela lopullisesti todistettu baseline.
 
 Seuraava isompi vaihe local smoke -vaiheen jalkeen on Hostinger parity -kerros:

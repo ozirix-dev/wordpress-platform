@@ -18,7 +18,7 @@
   - live Brave + Playwright read of the Hostinger SSL certificate page for `rapukauppa.fi`
   - live Brave + Playwright read of the authenticated Cloudflare DNS Records page for `rapukauppa.fi`
   - public DNS and HTTP reachability checks against `https://staging.rapukauppa.fi/`
-  - direct origin host-header checks to `92.112.182.62` for `staging.rapukauppa.fi`
+  - direct origin host-header checks to `<HOSTINGER_ORIGIN_IP>` for `staging.rapukauppa.fi`
 
 ## Site Mapping
 
@@ -30,15 +30,59 @@
 - wordpress_detected_yes_no: `yes`
 - confidence_of_mapping: `high`
 
+## Current State Override 2026-04-22
+
+This section supersedes the earlier 2026-04-18 and 2026-04-19 runtime
+snapshots below. Older pass-level bullets are kept as historical audit trail,
+not as current deployment truth.
+
+- current_site_repo_source_of_truth:
+  - `D:\Projects\Products\rapukauppa-fi`
+- current_runtime_contract:
+  - `GeneratePress + GenerateBlocks + rapukauppa-runtime-surface`
+- current_child_theme_slug:
+  - `rapukauppa-runtime-surface`
+- current_child_theme_parent:
+  - `generatepress`
+- current_child_theme_version:
+  - `0.3.15`
+- current_site_runtime_mu_plugin_version:
+  - `0.1.2`
+- current_production_public_home:
+  - `200 OK`
+  - `X-Rapukauppa-Site: rapukauppa.fi`
+  - `X-Rapukauppa-Environment: production`
+  - `body includes wp-child-theme-rapukauppa-runtime-surface`
+- current_production_runtime_route:
+  - `https://rapukauppa.fi/wp-json/rapukauppa/v1/runtime returns environment production, theme rapukauppa-runtime-surface, version 0.1.2`
+- current_production_child_theme_css:
+  - `public production style.css resolves to child-theme Version: 0.3.15`
+- current_staging_public_boundary:
+  - `user-confirmed current rule: staging is closed/protected`
+  - `unauthenticated https://staging.rapukauppa.fi/ returns 401 Unauthorized`
+  - `unauthenticated https://staging.rapukauppa.fi/wp-json/rapukauppa/v1/runtime returns 401 Unauthorized`
+  - `these are 2026-04-22 public-only observations; the site-repo CI gate currently checks the protected public boundary, while authenticated staging runtime health belongs to the approved operator path`
+  - `the 401 Basic Auth boundary is now expected protection proof, not a staging deploy failure`
+- current_commerce_gate:
+  - `production remains contact-led and out of WooCommerce/Paytrail checkout scope`
+  - `WooCommerce/Paytrail staging branch truth belongs to the rapukauppa-fi site repo and must not be inferred from older wordpress-platform intake snapshots`
+- current_interpretation:
+  - `the old twentytwentyfive / 0.1.9 production baseline is historical`
+  - `GeneratePress is now the active parent theme, not merely an installed side option`
+  - `future drift checks must compare against the rapukauppa-fi site repo current docs and scripts before using older intake snapshots`
+
 ## Verified Hostinger Facts
+
+The facts in this section were verified during the initial 2026-04-18 intake
+unless a later current-state section explicitly supersedes them.
 
 - hosting_plan_family: `hostinger_business`
 - hostinger_subscription_name: `Business Web Hosting`
 - hostinger_subscription_status: `non_renewing`
-- hostinger_system_username: `u963025419`
-- account_home_path: `/home/u963025419`
-- site_parent_path_before_public_html: `/home/u963025419/domains/rapukauppa.fi`
-- public_path: `/home/u963025419/domains/rapukauppa.fi/public_html`
+- hostinger_system_username: `<HOSTINGER_ACCOUNT_ID>`
+- account_home_path: `/home/<HOSTINGER_ACCOUNT_ID>`
+- site_parent_path_before_public_html: `/home/<HOSTINGER_ACCOUNT_ID>/domains/rapukauppa.fi`
+- public_path: `/home/<HOSTINGER_ACCOUNT_ID>/domains/rapukauppa.fi/public_html`
 - git_deploy_available: `yes`
 - git_deploy_current_status: `no repository configured; create-state visible in hPanel`
 - staging_available: `yes`
@@ -46,11 +90,11 @@
 - staging_exact_url: `https://staging.rapukauppa.fi/`
 - staging_dns_record_name: `staging`
 - staging_dns_record_type: `A`
-- staging_dns_record_target: `92.112.182.62`
+- staging_dns_record_target: `<HOSTINGER_ORIGIN_IP>`
 - staging_dns_proxy_status: `DNS only`
 - staging_ssl_current_status: `Lifetime SSL Active`
 - staging_ssl_action_this_pass: `none; no install/reinstall was needed`
-- staging_active_file_root: `/home/u963025419/domains/rapukauppa.fi/public_html/staging`
+- staging_active_file_root: `/home/<HOSTINGER_ACCOUNT_ID>/domains/rapukauppa.fi/public_html/staging`
 - staging_public_reachability: `passed; authoritative DNS resolves and HTTPS baseline now responds on front, wp-admin and wp-json`
 - staging_baseline_front_https: `passed; browser and curl returned 200 OK`
 - staging_baseline_wp_admin_https: `passed; browser returned 200 OK to the authenticated dashboard and curl returned a normal WordPress login redirect boundary`
@@ -59,7 +103,7 @@
 - staging_first_verified_site_code_pass: `passed`
 - staging_first_verified_site_code_repo_file: `wp-content/mu-plugins/rapukauppa-site-runtime.php`
 - staging_first_verified_site_code_apply_scope: `single-file upload only`
-- staging_first_verified_site_code_remote_target: `/home/u963025419/domains/rapukauppa.fi/public_html/staging/wp-content/mu-plugins/rapukauppa-site-runtime.php`
+- staging_first_verified_site_code_remote_target: `/home/<HOSTINGER_ACCOUNT_ID>/domains/rapukauppa.fi/public_html/staging/wp-content/mu-plugins/rapukauppa-site-runtime.php`
 - staging_first_verified_site_code_front_result: `passed; the footer note "Sivustoa kehitetään jatkuvasti paremman ostokokemuksen tueksi." is visible on the public staging front`
 - staging_first_verified_site_code_runtime_result: `passed; /wp-json/rapukauppa/v1/runtime now returns site rapukauppa.fi, environment staging, theme twentytwentyfive, and version 0.1.1`
 - staging_first_verified_site_code_header_result: `passed; staging responses now emit X-Rapukauppa-Site and X-Rapukauppa-Environment`
@@ -71,7 +115,7 @@
   - `wp-content/themes/rapukauppa-runtime-surface/style.css`
   - `wp-content/themes/rapukauppa-runtime-surface/functions.php`
 - staging_child_theme_apply_scope:
-  - `one new theme directory under /home/u963025419/domains/rapukauppa.fi/public_html/staging/wp-content/themes/`
+  - `one new theme directory under /home/<HOSTINGER_ACCOUNT_ID>/domains/rapukauppa.fi/public_html/staging/wp-content/themes/`
   - `two uploaded files only`
   - `one staging-only theme activation`
 - staging_child_theme_runtime_result:
@@ -127,22 +171,22 @@
   - `production stayed off the child theme, so the new post-body readability treatment did not appear there`
 - ssh_available: `yes`
 - ssh_enabled: `no`
-- ssh_connection_hint: `ssh -p 65002 u963025419@92.112.182.62`
+- ssh_connection_hint: `ssh -p <HOSTINGER_SSH_PORT> <HOSTINGER_ACCOUNT_ID>@<HOSTINGER_ORIGIN_IP>`
 - php_version: `PHP 8.3`
 - php_extensions_or_config_notes:
   - `PHP Configuration page is available in hPanel`
   - `Selectable versions observed in the current UI: PHP 8.2, PHP 8.3, PHP 8.4, PHP 8.5`
   - `The active selected version was read from the checked radio input on the PHP Configuration page: PHP 8.3`
-- database_name: `u963025419_bdTYW`
-- database_user: `u963025419_HwpPW`
+- database_name: `<HOSTINGER_DB_NAME_PRIMARY>`
+- database_user: `<HOSTINGER_DB_USER_PRIMARY>`
 - database_additional_visible_candidates:
-  - `u963025419_3j7E9 / u963025419_NJvtS` was visible in the same hosting account, but the Website column showed `Assign` rather than `rapukauppa.fi`
+  - `<HOSTINGER_DB_NAME_UNASSIGNED_CANDIDATE> / <HOSTINGER_DB_USER_UNASSIGNED_CANDIDATE>` was visible in the same hosting account, but the Website column showed `Assign` rather than `rapukauppa.fi`
 - phpmyadmin_entry_path: `https://phpmyadmin.hostinger.com`
 - cron_in_use_yes_no: `no existing cron jobs were visible in the current hPanel cron view`
 - file_manager_or_ftp_notes:
   - Hostinger website inventory exposed the website `root_directory` as the public web root.
   - hPanel File Manager exposes a website-specific access mode and a broader hosting-plan access mode as separate choices.
-  - The Cron Jobs form exposed the account-home prefix `/home/u963025419/`, which closes the parent path interpretation together with the verified public path.
+  - The Cron Jobs form exposed the account-home prefix `/home/<HOSTINGER_ACCOUNT_ID>/`, which closes the parent path interpretation together with the verified public path.
 - runtime_reconciliation_2026_04_18:
   - `wp-admin/themes.php was not available read-only in either environment because both staging and production redirected themes.php to wp-login.php`
   - `active theme was therefore locked from public body classes, the repo-owned runtime route, public child-theme CSS reads, and authenticated Hostinger File Browser read-only checks`
@@ -168,7 +212,7 @@
   - `rapukauppa.fi`, `is_enabled`, `order_id`, `username` and `public_path`:
     - Hostinger API `GET /api/hosting/v1/websites`
   - `hosting_plan_family`:
-    - Hostinger API `GET /api/hosting/v1/orders?statuses[]=active&order_ids[]=1006284049`
+    - Hostinger API `GET /api/hosting/v1/orders?statuses[]=active&order_ids[]=<HOSTINGER_ORDER_ID>`
   - `hostinger_subscription_name` and `hostinger_subscription_status`:
     - Hostinger API `GET /api/billing/v1/subscriptions`
   - `wordpress_detected_yes_no`:
@@ -187,7 +231,7 @@
   - `staging_dns_record_name`:
     - live Hostinger staging page showed exact staging hostname `staging.rapukauppa.fi`
   - `staging_dns_record_target`:
-    - direct host-header checks to `http://92.112.182.62/`, `http://92.112.182.62/wp-admin/` and `http://92.112.182.62/wp-json/` with `Host: staging.rapukauppa.fi`
+    - direct host-header checks to `http://<HOSTINGER_ORIGIN_IP>/`, `http://<HOSTINGER_ORIGIN_IP>/wp-admin/` and `http://<HOSTINGER_ORIGIN_IP>/wp-json/` with `Host: staging.rapukauppa.fi`
     - front returned `200 OK`
     - `wp-admin` returned `302 Found` redirecting to `https://staging.rapukauppa.fi/wp-admin/`
     - `wp-json` returned `200 OK` with a WordPress REST index
@@ -198,14 +242,14 @@
   - `active PHP version`:
     - live Brave + Playwright DOM read from the checked radio input on the PHP Configuration page
   - `account_home_path`:
-    - live Brave + Playwright read from the default Cron Jobs PHP command prefix `/usr/bin/php /home/u963025419/`
+    - live Brave + Playwright read from the default Cron Jobs PHP command prefix `/usr/bin/php /home/<HOSTINGER_ACCOUNT_ID>/`
   - `site_parent_path_before_public_html`:
     - deterministic derivation from the verified `public_path` plus the verified account-home prefix
   - `additional database row is not mapped to rapukauppa.fi`:
     - live Brave + Playwright row read from MySQL Database Management where the Website column showed `Assign`
   - `staging_public_reachability`:
-    - read-only Cloudflare DNS page still showed `A staging 92.112.182.62` with proxy status `DNS only`
-    - authoritative `Resolve-DnsName staging.rapukauppa.fi -Server nola.ns.cloudflare.com` returned `92.112.182.62`
+    - read-only Cloudflare DNS page still showed `A staging <HOSTINGER_ORIGIN_IP>` with proxy status `DNS only`
+    - authoritative `Resolve-DnsName staging.rapukauppa.fi -Server nola.ns.cloudflare.com` returned `<HOSTINGER_ORIGIN_IP>`
     - `curl -I https://staging.rapukauppa.fi/` returned `200 OK`
     - `curl -I https://staging.rapukauppa.fi/wp-admin/` returned `302 Found` to the normal WordPress login boundary
     - `curl -I https://staging.rapukauppa.fi/wp-json/` returned `200 OK`
@@ -334,27 +378,20 @@
 ## Unknown / Not Yet Verified
 
 - no blocker-level capability unknowns remain in the current deploy-contract baseline
-- public staging baseline is now green enough for the current contract:
-  - Hostinger shows staging as created and completed
-  - Hostinger SSL page shows `staging.rapukauppa.fi` in state `Lifetime SSL / Active`
-  - authoritative Cloudflare DNS resolves `staging.rapukauppa.fi` to `92.112.182.62`
-  - HTTPS front page, `wp-admin` and `wp-json` now respond successfully
-- staging now has a verified repo-owned runtime theme surface:
+- staging now has a protected repo-owned runtime theme surface:
   - active staging theme is `rapukauppa-runtime-surface`
-  - parent theme is `twentytwentyfive`
+  - parent theme is `generatepress`
+  - staging is intentionally closed/protected
+  - unauthenticated public front and runtime reads are expected to return `401 Unauthorized`
 - current production runtime truth is now also `rapukauppa-runtime-surface`
-  on parent `twentytwentyfive`
+  on parent `generatepress`
 - current child-theme drift note:
-  - staging `style.css` file is now at `0.1.9`
-  - production `style.css` file is now also at `0.1.9`
-  - staging `style.css` sha256 is now `913f6d73e5e69ed3585f975cd57e709a8946f5ee947c45f9cfe19d12394397eb`
-  - production `style.css` sha256 is now also `913f6d73e5e69ed3585f975cd57e709a8946f5ee947c45f9cfe19d12394397eb`
-  - cache-busted public CSS reads now match the aligned `0.1.9` file versions
-  - the normal public production front now references `style.css?ver=0.1.9` and the verified live mobile selectors match staging again
-  - `functions.php` matches between staging and production
-- user-confirmed but not yet directly re-verified in this intake:
-  - `GeneratePress` theme is installed in the runtime but not in active use
-  - do not treat this as proof that `GeneratePress` is the chosen runtime base
+  - local, staging, and production are now documented in the site repo as aligned on child-theme `0.3.15`
+  - direct public production reads confirm `style.css` header `Version: 0.3.15`
+  - staging public file reads require the protected operator/auth path, so public 401 alone is not a file-drift failure
+- GeneratePress status:
+  - `GeneratePress` is now the chosen active parent theme in the current site contract
+  - older notes saying it was installed but not active are historical only
 - not audited in this pass:
   - field-by-field PHP extension and option overrides beyond the active version `PHP 8.3`
 
@@ -382,6 +419,10 @@
 ## Deployment Recommendation For This Site
 
 - recommended model right now: `staging-first manual flow`
+- current release contract:
+  - `local, staging, and production share the GeneratePress + GenerateBlocks shell runtime contract`
+  - `future production updates still require a separate explicit manual promotion`
+  - `WooCommerce and Paytrail remain out of production unless a separate site-repo commerce production gate opens`
 
 Perustelu:
 
@@ -390,17 +431,16 @@ Perustelu:
 - staging capability is visible in hPanel and the first staging environment now exists at `https://staging.rapukauppa.fi/`
 - Git deploy capability is visible in hPanel, but no repository is configured
 - SSH capability is visible, but it is currently `INACTIVE`
-- the staging DNS record is now present as `A staging -> 92.112.182.62`
+- the staging DNS record is now present as `A staging -> <HOSTINGER_ORIGIN_IP>`
 - the final chosen proxy status remains `DNS only`; this pass kept Cloudflare read-only and confirmed that the staging record still resolves correctly through that mode
 - Hostinger now shows the staging hostname in SSL state `Lifetime SSL / Active`
-- public staging baseline verification now succeeds on front page, `wp-admin` and `wp-json`
+- public unauthenticated staging verification now returns `401 Unauthorized`, which is the current protected-staging boundary
 - therefore the safest first site-specific deployment path remains a manual staging-first flow, and the first repo-owned site-code pass has now been verified with a single-file mu-plugin apply on the live staging boundary
 - the current child-theme surface has now absorbed seven safe CSS-only passes without regressions on staging
-- the explicit production promotion pass has now aligned the shared child-theme file baseline again at `0.1.9`
-- the excerpt/body stack refinement is now promoted into production at file level
-- a follow-up cache/control-plane closure pass has now also closed the visible public production front for the promoted `0.1.9` baseline
+- later production promotions have moved the shared shell beyond the old `0.1.9` baseline to the current `0.3.15` GeneratePress + GenerateBlocks contract
+- the public production front now serves the `rapukauppa-runtime-surface` child theme on top of `generatepress`
 - future production verification should still continue to separate file parity from visible public-cache parity
-- therefore the next safe write-pass may return to a new staging-first refinement, but its production promotion should again be handled as a separate manual step
+- therefore the next safe write-pass may continue from the current site-repo contract, but production promotion should again be handled as a separate manual step
 
 ## Risks / Caveats
 
@@ -411,12 +451,15 @@ Perustelu:
 - earlier pass-level production non-impact bullets in this intake are historical snapshots and no longer describe the current production truth by themselves
 - the first staging subdomain now exists in Hostinger and the authoritative DNS layer exposes `staging.rapukauppa.fi`
 - Cloudflare keeps the staging hostname in `DNS only`, so the staging origin IP remains directly exposed by design during this current staging-first bootstrap model
+- unauthenticated public staging reads now prove the protection boundary, not full staging runtime health; use the approved site-repo operator path for authenticated staging content checks
 - do not store secrets, database passwords or SSH private keys in repo docs
 - do not treat `phpmyadmin_entry_path` as proof that the correct database is already mapped; it is only the current Hostinger direct entry URL pattern
 
 ## Recommended Next Step
 
-- tee seuraava tarkoituksellinen write-pass nykyisen staging-first contractin paalta:
-  - valitse seuraava uusi child-theme CSS refinement ensin stagingiin
-  - varmista se stagingissa
-  - promotoi se tuotantoon vasta erillisella explicit manual promotion -passilla
+- tee seuraava tarkoituksellinen write-pass nykyisen site-repon `0.3.15`
+  GeneratePress + GenerateBlocks -contractin paalta:
+  - varmista staging protected-runtime proof site-repon omilla skripteilla
+  - pidä WooCommerce/Paytrail tuotannon ulkopuolella, kunnes site-repossa
+    avataan erillinen commerce production gate
+  - promotoi tuotantoon vain erillisella explicit manual promotion -passilla

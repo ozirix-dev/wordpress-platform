@@ -20,8 +20,8 @@ Jos oikea sivusto tarvitsee child-teeman, muuta placeholder-teema
 tarkoituksellisesti child-theme-malliin ja kirjaa `parent_theme_slug`
 `site-profile.md`:aan.
 
-Nykyinen local smoke -tulos todisti standalone-teemalla sync-, packaging- ja
-runtime-rajan. Se ei viela yksinaan todista child theme + parent theme -polkua,
+2026-04-17 local smoke -tulos todisti standalone-teemalla sync-, packaging- ja
+runtime-rajan. Se ei yksinaan todista child theme + parent theme -polkua,
 jos site-repo nojaa valmiiseen parent-themeen.
 
 ## Child-theme conversion
@@ -55,7 +55,7 @@ Validation-muistutus:
 
 - jos `parent_theme_slug` on asetettu, `style.css`-headerin, runtime-baselinen
   ja oikean parent-theme-paketin kuuluu vastata toisiaan
-- nykyinen local smoke -baseline todisti standalone-teeman, ei yksinaan
+- 2026-04-17 local smoke -baseline todisti standalone-teeman, ei yksinaan
   parent-themeen sidottua child-theme-polkuasi
 
 Site-repo ei omista yhteista WordPress-perheen support- tai umbrella-kerrosta.
@@ -137,6 +137,7 @@ Starter sisaltaa kaksi kevytta PowerShell-apuria:
   - skripti kieltaytyy kirjoittamasta takaisin source-repon omaan puuhun
 - `tools/package-deployable.ps1`
   - kokoaa review-kelpoisen paketin repo-managed `wp-content`-poluista
+  - kirjoittaa `package-manifest.json`-review-metatiedon paketin juureen
   - tukee `Directory`- ja `Zip`-artifacteja
   - aja ensin aina `-DryRun -WhatIf`
   - `ExtraFiles` pidetaan repo-relatiivisina ja source-repon rajoissa

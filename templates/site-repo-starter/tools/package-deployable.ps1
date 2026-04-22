@@ -59,6 +59,7 @@ function Resolve-ExistingPath {
 }
 
 function Resolve-OrCreateDirectory {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param([Parameter(Mandatory = $true)] [string] $Path)
 
     if (-not (Test-Path -LiteralPath $Path)) {
@@ -88,7 +89,7 @@ function Test-SafeRelativeRepoPath {
     return $true
 }
 
-function Copy-ScopeItems {
+function Copy-ScopeItem {
     param(
         [Parameter(Mandatory = $true)]
         [string] $SourceScope,
@@ -108,6 +109,7 @@ function Copy-ScopeItems {
 }
 
 function New-Manifest {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true)]
         [string] $TargetPath,
@@ -174,6 +176,7 @@ if ($PSCmdlet.ShouldProcess($stagingPath, "Create staging package folder")) {
 
 $warnings = @{}
 $includedScopes = New-Object System.Collections.Generic.List[string]
+$includedExtraFiles = New-Object System.Collections.Generic.List[string]
 
 foreach ($scope in $Scopes) {
     $sourceScope = Join-Path $sourceWpContent $scope
@@ -190,7 +193,7 @@ foreach ($scope in $Scopes) {
             New-Item -ItemType Directory -Path $destinationScope -Force | Out-Null
         }
 
-        Copy-ScopeItems -SourceScope $sourceScope -DestinationScope $destinationScope
+        Copy-ScopeItem -SourceScope $sourceScope -DestinationScope $destinationScope
     }
 }
 
@@ -224,6 +227,7 @@ foreach ($file in $ExtraFiles) {
         }
 
         Copy-Item -LiteralPath $sourceFile -Destination $destinationFile -Force
+        [void] $includedExtraFiles.Add($file)
     }
 }
 
@@ -234,7 +238,7 @@ New-Manifest `
     -GeneratedAt (Get-Date) `
     -ArtifactKind $ArtifactType `
     -SourcePath $sourceRepo `
-    -IncludedExtraFiles $ExtraFiles
+    -IncludedExtraFiles $includedExtraFiles.ToArray()
 
 if ($ArtifactType -eq 'Zip') {
     $zipPath = Join-Path $outputDir "$packageFolderName.zip"

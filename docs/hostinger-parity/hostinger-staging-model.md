@@ -44,6 +44,6 @@ taman support-repon sisaan. Kayta sen sijaan:
 
 ## Muistutus
 
-Nykyinen local smoke -baseline ei yksin todista Hostinger-staging-polun
+2026-04-17 local smoke -baseline ei yksin todista Hostinger-staging-polun
 toimivuutta. Se todistaa vain sen, etta site-repo ja helperit osaavat tuottaa
 hallitun local/runtime-rajan.

@@ -72,8 +72,12 @@ Kayta tarvittaessa taman starterin apureita:
   - skripti ei ole tarkoitettu source-repon omaan puuhun tai tuotantopolkuun
 - `tools/package-deployable.ps1`
   - kokoaa review-paketin site-kohtaisesta repo-managed sisallosta
+  - paketin deploy-payload on `wp-content/`; `package-manifest.json` on
+    review-metatietoa, ei Hostingeriin vietavaa WordPress-sisaltoa
   - aja ensin `-DryRun -WhatIf`
   - salli `ExtraFiles` vain tarkoituksellisille repo-relatiivisille tiedostoille
+  - manifestin `includedExtras` kuvaa vain ne extra-tiedostot, jotka todella
+    kopioitiin pakettiin; puuttuvat extrat kirjataan manifestin varoituksiin
 
 ## Rollback-ajattelu
 
@@ -88,7 +92,7 @@ Pida rollback yksinkertaisena:
 
 - `site-profile.md` on ajan tasalla
 - oikea `staging_url` ja `production_url` on kirjattu
-- deploy-paketti sisaltaa vain hallitut `wp-content`-polut
+- deploy-paketin WordPress-payload sisaltaa vain hallitut `wp-content`-polut
 - ei `uploads`, dumppeja, cachea tai salaisuuksia
 - multilingual-site:ssa locale-polut ja kaannoslogiikka on tarkistettu
 - rollback-polku on tiedossa ennen tuotantoonvientia

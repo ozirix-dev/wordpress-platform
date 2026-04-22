@@ -120,7 +120,7 @@ Ensimmainen testikohde kannattaa pitaa mahdollisimman yksinkertaisena:
 
 Tavoite on ensin todentaa perusraja, ei kaikkea kerralla.
 
-Kaytannon huomio ensimmaisen smoke-kierroksen jalkeen:
+Kaytannon huomio 2026-04-17 smoke-kierroksen jalkeen:
 
 - jos local harnessissa ei ole valmiiksi tarkoitettua parent-themea, ensimmainen
   smoke-teema kannattaa tehda tarkoituksella standalone-teemaksi
@@ -132,13 +132,13 @@ placeholder-teema on neutral site theme -scaffold, ei pakotettu child theme.
 Jos sivusto tarvitsee child-teeman, kirjaa `parent_theme_slug`
 `site-profile.md`:aan ja muuta teeman headerit site-kohtaisesti.
 
-Mita nykyinen smoke-testi todisti:
+Mita 2026-04-17 smoke-testi todisti:
 
 - local sync -raja toimii yhdella local WordPress-asennuksella
 - packaging-raja toimii repo-managed `wp-content`-sisallolle
 - runtime-raja toimii, kun repo-managed teema ja plugin aktivoidaan harnessissa
 
-Mita nykyinen smoke-testi ei viela todistanut:
+Mita 2026-04-17 smoke-testi ei viela todistanut:
 
 - child theme + oikea parent theme -polkua ei ole viela todennettu erillisena
   testina
@@ -245,12 +245,16 @@ Se on helpoin tarkistaa silmalla. Kun se toimii, testaa:
 
 Tarkista package-sisallosta:
 
-- mukana on vain repo-managed `wp-content`
+- WordPress deploy-payloadissa on vain repo-managed `wp-content`
+- `package-manifest.json` on review-metatietoa, ei WordPress-runtimeen vietavaa
+  sisaltoa
 - ei WordPress corea
 - ei `uploads`-sisaltoa
 - ei tietokantaa
 - ei salaisuuksia
-- manifesti vastaa todellista artifactia
+- manifestin `scopeNames` ja `includedExtras` vastaavat todellista artifactia
+- puuttuvat optional `ExtraFiles` -pyynnot nakyvat manifestin varoituksissa,
+  eivat mukana olevina tiedostoina
 
 ## Vaihe 9: Testaa turvallisuusrajat tarkoituksella
 
