@@ -1,5 +1,6 @@
 #!/usr/bin/env pwsh
 #Requires -Version 7.0
+# SPDX-License-Identifier: GPL-2.0-or-later
 
 <#
 .SYNOPSIS

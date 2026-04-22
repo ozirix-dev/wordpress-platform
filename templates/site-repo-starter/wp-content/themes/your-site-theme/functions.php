@@ -3,6 +3,8 @@
  * Site theme bootstrap.
  *
  * Keep site-specific theme code in this file as each project grows.
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 defined('ABSPATH') || exit;

@@ -2,6 +2,15 @@
 
 Tama template on tarkoitettu yhden WordPress-sivuston omistajarepon V1-bootstrapiin.
 
+## License
+
+Starterin oletuslisenssi on `GPL-2.0-or-later`.
+
+Pidä site-owned WordPress-teema-, plugin-, mu-plugin- ja helper-koodi samalla
+WordPress-yhteensopivalla lisenssiketjulla, ellei site-repossa dokumentoida
+erillistä yhteensopivaa päätöstä. Sisältö, media, salaisuudet, lisenssiavaimet
+ja asiakasdata eivät kuulu tähän repo-lisenssiin.
+
 ## Mita tama repo omistaa
 
 Site-repo omistaa yhden sivuston versionhallittavan kerroksen:

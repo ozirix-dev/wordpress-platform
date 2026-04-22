@@ -17,6 +17,15 @@ se ei ole enää tämän repon current-identiteetti.
 
 Ks. tarkempi linjaus: [docs/repo-identity.md](./docs/repo-identity.md)
 
+## License
+
+Tama repo on lisensoitu lisenssilla `GPL-2.0-or-later`.
+
+Peruslinja on sama kuin WordPress-ekosysteemissa: repo-owned WordPress-teema-,
+plugin-, mu-plugin- ja helper-koodi pidetaan GPLv2-or-later-yhteensopivana.
+Site-kohtaiset sisallot, mediat, salaisuudet, lisenssiavaimet ja asiakasdata
+eivat kuulu tahan lisenssiketjuun eivatka tahan repo-puuhun.
+
 ## Rooli umbrella-rakenteessa
 
 - `D:\Projects\_Hub\Project-Map` on umbrella- ja placement-kartta.
