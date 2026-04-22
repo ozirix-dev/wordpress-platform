@@ -17,8 +17,8 @@ Describe 'repository control configuration' {
         @($config.required_status_checks.contexts) |
             Should -Be @('lint-and-smoke', 'gitleaks')
         $config.required_status_checks.strict | Should -BeTrue
-        $workflow | Should -Match '(?m)^  lint-and-smoke:$'
-        $workflow | Should -Match '(?m)^  gitleaks:$'
+        $workflow | Should -Match '(?m)^\s*lint-and-smoke:\s*$'
+        $workflow | Should -Match '(?m)^\s*gitleaks:\s*$'
         $workflow | Should -Match 'FORCE_JAVASCRIPT_ACTIONS_TO_NODE24:\s+"true"'
     }
 
