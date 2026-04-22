@@ -29,8 +29,7 @@ Do not open a public issue for a suspected vulnerability or secret exposure.
 
 Use the first available private channel:
 
-1. GitHub private vulnerability reporting or a GitHub Security Advisory, if
-   enabled for the repository.
+1. GitHub private vulnerability reporting or a GitHub Security Advisory.
 2. A private maintainer channel already established for this workspace.
 3. A direct private handoff to the repository owner.
 
@@ -80,6 +79,22 @@ Git. Do not publish tmp artifacts without checking their contents.
 
 `package-manifest.json` is review metadata, not WordPress runtime content. It
 must not expose absolute local workstation paths or secrets.
+
+## Repository Protection
+
+The public repository is protected by GitHub Actions status checks and classic
+branch protection. The desired branch protection payload is tracked in
+`.github/branch-protection-main.json`, and `tools/apply-branch-protection.ps1`
+can verify the live GitHub setting against that file.
+
+The required check names are:
+
+- `lint-and-smoke`
+- `gitleaks`
+
+Hostinger-specific account, IP, DB/user prefix, home-path, and SSH-target
+patterns are blocked in the current tree by `tools/check-public-safety.ps1`.
+Default Gitleaks rules scan the full Git history for secret-shaped material.
 
 ## Expected Handling
 

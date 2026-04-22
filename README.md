@@ -136,6 +136,7 @@ Lue ainakin:
 - [docs/multisite-decision-guide.md](./docs/multisite-decision-guide.md)
 - [docs/local-single-install-test-plan.md](./docs/local-single-install-test-plan.md)
 - [docs/repo-bootstrap-checklist.md](./docs/repo-bootstrap-checklist.md)
+- [docs/repository-controls.md](./docs/repository-controls.md)
 - [docs/tmp-artifacts-and-baselines.md](./docs/tmp-artifacts-and-baselines.md)
 
 2026-04-17 local smoke -baseline todisti local sync-, packaging- ja runtime-rajan
