@@ -1,4 +1,6 @@
 <?php
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 /**
  * Minimal fallback template for the starter site theme.
  */

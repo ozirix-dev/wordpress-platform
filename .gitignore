@@ -24,6 +24,6 @@ coverage/
 *.log
 *.tmp
 *.bak
+testResults.xml
 tmp/**
 !tmp/.gitkeep
-

@@ -4,13 +4,16 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   lint-and-smoke:
     runs-on: windows-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -18,15 +21,31 @@ jobs:
           php-version: "8.3"
           coverage: none
 
-      - name: Install PowerShell analyzer
+      - name: Install PowerShell modules
         shell: pwsh
         run: |
           Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-          Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
+          Install-Module `
+            -Name PSScriptAnalyzer `
+            -RequiredVersion 1.25.0 `
+            -Scope CurrentUser `
+            -Force `
+            -ErrorAction Stop
+          Install-Module `
+            -Name Pester `
+            -RequiredVersion 5.7.1 `
+            -Scope CurrentUser `
+            -Force `
+            -SkipPublisherCheck `
+            -ErrorAction Stop
 
       - name: Markdown lint
         shell: pwsh
         run: npx --yes markdownlint-cli2
+
+      - name: Public safety grep
+        shell: pwsh
+        run: ./tools/check-public-safety.ps1
 
       - name: PowerShell parser check
         shell: pwsh
@@ -56,6 +75,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+          Import-Module PSScriptAnalyzer -RequiredVersion 1.25.0 -Force
           $results = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Error,Warning
           if ($results) {
             $results | Format-Table -AutoSize | Out-String
@@ -74,6 +94,12 @@ jobs:
               throw "php lint failed: $file"
             }
           }
+
+      - name: Pester tests
+        shell: pwsh
+        run: |
+          Import-Module Pester -RequiredVersion 5.7.1 -Force
+          Invoke-Pester -Path tests -CI
 
       - name: Package helper smoke test
         shell: pwsh
@@ -126,3 +152,18 @@ jobs:
           })) {
             throw "missing-extra.md warning missing"
           }
+
+  gitleaks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks full-history scan
+        uses: gitleaks/gitleaks-action@v2.3.9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_VERSION: 8.30.1
