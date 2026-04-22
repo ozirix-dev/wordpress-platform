@@ -1,0 +1,128 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-and-smoke:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+
+      - name: Install PowerShell analyzer
+        shell: pwsh
+        run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force
+
+      - name: Markdown lint
+        shell: pwsh
+        run: npx --yes markdownlint-cli2
+
+      - name: PowerShell parser check
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $scripts = Get-ChildItem -Recurse -File -Include *.ps1,*.psm1,*.psd1 |
+            Select-Object -ExpandProperty FullName
+          foreach ($scriptPath in $scripts) {
+            $script = (Resolve-Path $scriptPath).Path
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              $script,
+              [ref] $tokens,
+              [ref] $errors
+            ) | Out-Null
+
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object {
+                Write-Error ("{0}: {1}" -f $scriptPath, $_.Message)
+              }
+              throw "PowerShell parser errors found"
+            }
+          }
+
+      - name: PowerShell static analysis
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Severity Error,Warning
+          if ($results) {
+            $results | Format-Table -AutoSize | Out-String
+            throw "PSScriptAnalyzer reported issues"
+          }
+
+      - name: PHP syntax lint
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $files = Get-ChildItem -Recurse -File -Filter *.php |
+            Select-Object -ExpandProperty FullName
+          foreach ($file in $files) {
+            php -l $file
+            if ($LASTEXITCODE -ne 0) {
+              throw "php lint failed: $file"
+            }
+          }
+
+      - name: Package helper smoke test
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $script = (Resolve-Path "templates/site-repo-starter/tools/package-deployable.ps1").Path
+          $source = (Resolve-Path "templates/site-repo-starter").Path
+          $out = Join-Path ([System.IO.Path]::GetTempPath()) (
+            "wp-platform-package-test-" + [guid]::NewGuid().ToString("N")
+          )
+          New-Item -ItemType Directory -Path $out -Force | Out-Null
+
+          & $script `
+            -SourceRepoPath $source `
+            -OutputDirectory $out `
+            -ArtifactType Directory `
+            -ArtifactName "manifest-check" `
+            -Scopes themes `
+            -ExtraFiles @("README.md", "missing-extra.md")
+
+          if (-not $?) {
+            throw "package helper invocation failed"
+          }
+
+          $pkg = Get-ChildItem -LiteralPath $out -Directory |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+          if (-not $pkg) {
+            throw "package folder was not created"
+          }
+
+          $manifestPath = Join-Path $pkg.FullName "package-manifest.json"
+          $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
+
+          if ($manifest.sourceRepo -ne "site-repo-starter") {
+            throw "sourceRepo should be repo name only, got: $($manifest.sourceRepo)"
+          }
+          if ($manifest.sourceRepo -match "^[A-Za-z]:\\") {
+            throw "sourceRepo leaked absolute path"
+          }
+          if (@($manifest.includedExtras) -notcontains "README.md") {
+            throw "README.md missing from includedExtras"
+          }
+          if (@($manifest.includedExtras) -contains "missing-extra.md") {
+            throw "missing-extra.md should not be included"
+          }
+          if (-not (@($manifest.warnings) | Where-Object {
+            $_.name -eq "missing-extra.md" -and
+            $_.reason -eq "Missing in source repo"
+          })) {
+            throw "missing-extra.md warning missing"
+          }

@@ -25,6 +25,7 @@ The starter package helper may write:
 
 Only the intended `wp-content/` payload belongs in a WordPress runtime target.
 The manifest is for review and audit, not runtime deployment.
+Manifest metadata should not expose absolute local workstation paths.
 
 ## Baseline Wording
 

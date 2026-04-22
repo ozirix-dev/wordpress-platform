@@ -78,6 +78,7 @@ Kayta tarvittaessa taman starterin apureita:
   - salli `ExtraFiles` vain tarkoituksellisille repo-relatiivisille tiedostoille
   - manifestin `includedExtras` kuvaa vain ne extra-tiedostot, jotka todella
     kopioitiin pakettiin; puuttuvat extrat kirjataan manifestin varoituksiin
+  - manifestin `sourceRepo` on repo-nimi, ei absoluuttinen paikallinen polku
 
 ## Rollback-ajattelu
 

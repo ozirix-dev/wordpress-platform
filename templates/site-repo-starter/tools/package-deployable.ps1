@@ -127,7 +127,7 @@ function New-Manifest {
         [string] $ArtifactKind,
 
         [Parameter(Mandatory = $true)]
-        [string] $SourcePath,
+        [string] $SourceRepoName,
 
         [string[]] $IncludedExtraFiles = @()
     )
@@ -138,7 +138,7 @@ function New-Manifest {
         artifactType = $ArtifactKind
         scopeNames = @($IncludedScopes)
         includedExtras = @($IncludedExtraFiles)
-        sourceRepo = $SourcePath
+        sourceRepo = $SourceRepoName
         warnings = @($Warnings.GetEnumerator() | ForEach-Object {
                 @{
                     name = $_.Name
@@ -238,7 +238,7 @@ New-Manifest `
     -Warnings $warnings `
     -GeneratedAt (Get-Date) `
     -ArtifactKind $ArtifactType `
-    -SourcePath $sourceRepo `
+    -SourceRepoName (Split-Path -Path $sourceRepo -Leaf) `
     -IncludedExtraFiles $includedExtraFiles.ToArray()
 
 if ($ArtifactType -eq 'Zip') {

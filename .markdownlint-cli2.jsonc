@@ -1,0 +1,15 @@
+{
+  "globs": [
+    "**/*.md",
+    "!tmp/**",
+    "!templates/site-repo-starter/tmp/**"
+  ],
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD024": {
+      "siblings_only": true
+    },
+    "MD034": false
+  }
+}
