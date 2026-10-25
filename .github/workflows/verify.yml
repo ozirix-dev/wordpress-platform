@@ -2,13 +2,19 @@ name: Verify
 
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+concurrency:
+  group: wordpress-platform-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   lint-and-smoke:
@@ -17,14 +23,59 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Classify change scope
+        id: scope
+        shell: pwsh
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          if ($env:EVENT_NAME -eq 'workflow_dispatch') {
+            $level = 'full'
+          }
+          else {
+            $base = if ($env:EVENT_NAME -eq 'pull_request') { $env:PR_BASE_SHA } else { $env:BEFORE_SHA }
+            $baseExists = $false
+            if (-not [string]::IsNullOrWhiteSpace($base) -and $base -notmatch '^0+$') {
+              git cat-file -e "$base^{commit}" 2>$null
+              $baseExists = $LASTEXITCODE -eq 0
+            }
+            if (-not $baseExists) {
+              $level = 'full'
+            }
+            else {
+              $paths = @(git diff --name-only $base $env:HEAD_SHA)
+              if ($LASTEXITCODE -ne 0 -or $paths.Count -eq 0) {
+                $level = 'full'
+              }
+              else {
+                $level = 'docs'
+                foreach ($path in $paths) {
+                  if ($path -notmatch '(^|/)(README|AGENTS)(\.[^/]+)?$' -and $path -notmatch '\.md$') {
+                    $level = 'full'
+                    break
+                  }
+                }
+              }
+            }
+          }
+          "level=$level" | Set-Content -Path $env:GITHUB_OUTPUT -Encoding utf8NoBOM
 
       - name: Set up PHP
+        if: steps.scope.outputs.level == 'full'
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3"
           coverage: none
 
       - name: Install PowerShell modules
+        if: steps.scope.outputs.level == 'full'
         shell: pwsh
         run: |
           Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -51,6 +102,7 @@ jobs:
         run: ./tools/check-public-safety.ps1
 
       - name: PowerShell parser check
+        if: steps.scope.outputs.level == 'full'
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
@@ -75,6 +127,7 @@ jobs:
           }
 
       - name: PowerShell static analysis
+        if: steps.scope.outputs.level == 'full'
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
@@ -86,6 +139,7 @@ jobs:
           }
 
       - name: PHP syntax lint
+        if: steps.scope.outputs.level == 'full'
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
@@ -99,12 +153,14 @@ jobs:
           }
 
       - name: Pester tests
+        if: steps.scope.outputs.level == 'full'
         shell: pwsh
         run: |
           Import-Module Pester -RequiredVersion 5.7.1 -Force
           Invoke-Pester -Path tests -CI
 
       - name: Package helper smoke test
+        if: steps.scope.outputs.level == 'full'
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
@@ -155,6 +211,11 @@ jobs:
           })) {
             throw "missing-extra.md warning missing"
           }
+
+      - name: Check documentation whitespace
+        if: steps.scope.outputs.level == 'docs'
+        shell: pwsh
+        run: git diff --check
 
   gitleaks:
     runs-on: ubuntu-latest
