@@ -215,7 +215,14 @@ jobs:
       - name: Check documentation whitespace
         if: steps.scope.outputs.level == 'docs'
         shell: pwsh
-        run: git diff --check
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          $base = if ($env:EVENT_NAME -eq 'pull_request') { $env:PR_BASE_SHA } else { $env:BEFORE_SHA }
+          git diff --check $base $env:HEAD_SHA
 
   gitleaks:
     runs-on: ubuntu-latest
